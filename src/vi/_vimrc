@@ -1,0 +1,209 @@
+
+if has("win32")
+
+	set diffexpr=MyDiff()
+
+	function MyDiff()
+		let opt = '-a --binary '
+		if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+		if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+		let arg1 = v:fname_in
+		if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+		let arg2 = v:fname_new
+		if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+		let arg3 = v:fname_out
+		if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+		if $VIMRUNTIME =~ ' '
+			if &sh =~ '\<cmd'
+				if empty(&shellxquote)
+					let l:shxq_sav = ''
+					set shellxquote&
+				endif
+				let cmd = '"' . $VIMRUNTIME . '\diff"'
+			else
+				let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+			endif
+		else
+			let cmd = $VIMRUNTIME . '\diff'
+		endif
+		silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3
+		if exists('l:shxq_sav')
+			let &shellxquote=l:shxq_sav
+		endif
+	endfunction
+
+	function Formatxml()
+		if !empty( glob($USERPROFILE."/bin/xmllint.exe") )
+			echo "xmllint --format"
+			silent %!set xmllint_indent=	& \%userprofile\%/bin/xmllint --format -
+		else
+			echo "vimscript --format"
+			%j!            " ganze Datei auf eine Zeile
+			%s~>\s*<~><~g  " Trim content und zwischenraum
+			%s~<~\r<~g     " Jeden Tag auf eine neue Zeile
+			%g~^\s*$~d     " alle leerZeilen entfernen
+			%g!~>$~j!      " überall, wo text (also kein Tag) am ende Steht mach join
+			if line('$') < 500
+				" einrückung erstellen (filetype muss auf xml sein)
+				norm gg=G
+			endif
+		endif
+	endfunction
+
+else " NOT win32
+
+	function Formatxml()
+		   if !empty( glob("/usr/bin/xmllint") )
+				 echo "xmllint --format"
+				 silent %!XMLLINT_INDENT="	" /usr/bin/xmllint --format -
+		   else
+				 echo "vimscript --format"
+				 %j!            " ganze Datei auf eine Zeile
+				 %s~>\s*<~><~g  " Trim content und zwischenraum
+				 %s~<~\r<~g     " Jeden Tag auf eine neue Zeile
+				 %g~^\s*$~d     " alle leerZeilen entfernen
+				 %g!~>$~j!      " überall, wo text (also kein Tag) am ende Steht mach join
+				 if line('$') < 500
+						" einrückung erstellen (filetype muss auf xml sein)
+					"    norm gg=G
+				 endif
+		   endif
+	endfunction
+
+endif
+
+
+
+
+set nobackup
+set nowritebackup
+set noswapfile
+
+colorscheme koehler
+set nocursorline
+set number
+set hidden  " allows to switch away from unsaved buffer
+"set relativenumber
+set linebreak
+set hlsearch
+set showcmd
+set textwidth=79
+set formatoptions=roq
+set wildmenu
+
+if line('$') > 10000
+	syntax off
+else
+	syntax on
+endif
+
+let mapleader = ','
+
+
+" indent ----------------------------------------------------------------------
+
+set autoindent
+set nosmartindent
+set shiftwidth=4
+set tabstop=4
+vmap > >gv
+vmap <Tab> >gv
+vmap < <gv
+vmap <S-Tab> <gv
+imap <S-Tab> <Esc><<i
+
+function Indenting(indent, what, cols)
+	let spccol = repeat(' ', a:cols)
+	let result = substitute(a:indent, spccol, '\t', 'g')
+	let result = substitute(result, ' \+\ze\t', '', 'g')
+	if a:what == 1
+		let result = substitute(result, '\t', spccol, 'g')
+	endif
+	return result
+endfunction
+function IndentConvert(line1, line2, what, cols)
+	let savepos = getpos('.')
+	let cols = empty(a:cols) ? &tabstop : a:cols
+	execute a:line1 . ',' . a:line2 . 's/^\s\+/\=Indenting(submatch(0), a:what, cols)/e'
+	call histdel('search', -1)
+	call setpos('.', savepos)
+endfunction
+command -nargs=? -range=% Space2Tab call IndentConvert(<line1>,<line2>,0,<q-args>)
+command -nargs=? -range=% Tab2Space call IndentConvert(<line1>,<line2>,1,<q-args>)
+command -nargs=? -range=% RetabIndent call IndentConvert(<line1>,<line2>,&et,<q-args>)
+command -nargs=1 -range   SuperRetab <line1>,<line2>s/\v%(^ *)@<= {<args>}/\t/g
+
+
+" misc ------------------------------------------------------------------------
+
+" buffer window
+map <c-j> <c-w>j
+map <c-k> <c-w>k
+map <c-h> <c-w>h
+map <c-l> <c-w>l
+
+" closeBuffer
+nmap <F4> :bp<CR>:bd#<CR>
+imap <F4> <Esc>:bp<CR>:bd#<CR>
+vmap <F4> <Esc>:bp<CR>:bd#<CR>
+
+" change cwd to current file
+map cdc :cd %:p:h<CR>:pwd<CR>
+
+" Not searchNext. Do only highlight word under cursor.
+nmap * *N
+
+" Execute previous one now
+:cd %:p:h
+
+" save with ctrl-s
+nmap <C-s> :up<CR>
+
+" commenting
+autocmd FileType c,cpp,java,php,javascript,html let b:comment_leader = '//'
+autocmd FileType sh,ruby,python                 let b:comment_leader = '#'
+autocmd FileType conf,fstab                     let b:comment_leader = '#'
+autocmd FileType tex                            let b:comment_leader = '% '
+autocmd FileType mail                           let b:comment_leader = '> '
+autocmd FileType vim                            let b:comment_leader = '"'
+map <silent> ,cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
+map <silent> ,cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
+
+
+" OS integration --------------------------------------------------------------
+
+if has("win32")
+
+	" insert current TS
+	map <F5> a<C-R>=strftime('%Y%m%d%H%M%S')<CR><Esc>
+	map <S-F5> a<C-R>=strftime('%d.%m.%Y %H:%M:%S%z')<CR><Esc>
+	map <C-F5> a<C-R>=strftime('%Ec')<CR><Esc>
+
+	" Printer -----------------------------
+	set printfont=Courier:h10
+	set printoptions=header:2,left:15mm,right:10mm,bottom:15mm,number:y,paper:A4,portrait:y,syntax:y
+
+else
+
+	" insert current TS
+	map <F5> a<C-R>=strftime('%s')<CR><Esc>
+	map <S-F5> a<C-R>=strftime('%d.%m.%Y %H:%M:%S%z')<CR><Esc>
+	map <C-F5> a<C-R>=strftime('%Ec')<CR><Esc>
+
+	command  OsTerminal  !x-terminal-emulator &
+	command  OsFileExplorer  !x-file-manager `pwd` &
+	command  OsIceweasel  !iceweasel `pwd` &
+	command  OsChromium  !chromium `pwd` &
+
+endif
+
+
+" filetype specific -----------------------------------------------------------
+
+autocmd FileType html setlocal shiftwidth=2 tabstop=2
+
+autocmd FileType javascript setlocal textwidth=100
+
+" typescript
+autocmd BufNewFile,BufRead 	*.ts  setlocal ft=javascript
+
