@@ -1,0 +1,14 @@
+{
+  "name": "my-config",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+  	"build": "cp -t dist/ src/*",
+	"clean": "rm -rf dist/*",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "hiddenalpha",
+  "license": "ISC"
+}
