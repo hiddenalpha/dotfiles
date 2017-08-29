@@ -1,14 +1,14 @@
 {
   "name": "my-config",
   "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Project where I collect my configuration files and setup TODOs.",
   "scripts": {
-  	"build": "cp -t dist/ src/*",
-	"clean": "rm -rf dist/*",
+    "build": "cp -rt dist/ src/*",
+    "clean": "rm -rf dist/*",
+    "clean-build": "npm clean && npm build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": [ "config" , "setup" ],
   "author": "hiddenalpha",
-  "license": "ISC"
+  "license": "Private. Nobody is allowed to use this."
 }
