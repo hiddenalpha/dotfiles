@@ -1,0 +1,3 @@
+
+synclient TouchpadOff=1
+

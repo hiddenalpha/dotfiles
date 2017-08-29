@@ -1,0 +1,23 @@
+#!/bin/bash
+
+
+# xbacklight variant (Seems broken in debian 9)
+
+if [ "$1" = "inc" ] ;then
+	v=$( xbacklight );
+	v=$( printf "%.0f" "$v" );
+	v=$(( $v*2 ));
+	v=$( [ $v -lt 1 ]&&echo 1||echo $v );
+	v=$( [ $v -gt 100 ]&&echo 100||echo $v );
+	xbacklight -set $v -time 0;
+fi
+
+if [ "$1" = "dec" ] ;then
+	v=$( xbacklight );
+	v=$( printf "%.0f" "$v" );
+	v=$(( $v/2 ));
+	v=$( [ $v -lt 1 ] && echo 1 || echo $v );
+	v=$( [ $v -gt 100 ] && echo 100 || echo $v );
+	xbacklight -set $v -time 0;
+fi
+

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+find -type d -name ".git" \
+	| while read x ; do \
+		x=`dirname $x`; \
+		echo -e "\n-------------------------------------------------------------------------------\n$x"; \
+		pushd $x; \
+		git status;
+		popd > /dev/null;
+	done
+
