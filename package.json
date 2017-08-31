@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Project where I collect my configuration files and setup TODOs.",
   "scripts": {
-    "build": "cp -rt dist/ src/*",
+    "build": "mkdir dist && cp -rt dist/ src/*",
     "clean": "rm -rf dist/*",
     "clean-build": "npm clean && npm build",
     "test": "echo \"Error: no test specified\" && exit 1"
