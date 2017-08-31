@@ -1,7 +1,11 @@
 [user]
 	email = andyfankhauser@gmx.ch
-	name = andreas@machine
+	name = user@host
+[merge]
+	tool = meld
+[push]
+	default = simple
 [alias]
-	# TODO: Update with correct version
-	mylog = log --all --graph --decorate --date-order
-	myshortlog = log --all --graph --decorate --date-order
+	mylog = log --graph --all --date-order --decorate
+	myshortlog = log --graph --all --date-order --decorate --oneline
+	mybehinddevelop = log --oneline HEAD..origin/develop
