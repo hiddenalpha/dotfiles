@@ -55,8 +55,6 @@ elif [ $level -gt 100 ] ;then
 	level=100
 fi
 
-echo "[INFO ] New level is $level"
-
 # Translate percent to target scale
 nxt=$( echo $level*$range/100 | bc )
 
