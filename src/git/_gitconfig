@@ -1,0 +1,7 @@
+[user]
+	email = andyfankhauser@gmx.ch
+	name = andreas@machine
+[alias]
+	# TODO: Update with correct version
+	mylog = log --all --graph --decorate --date-order
+	myshortlog = log --all --graph --decorate --date-order
