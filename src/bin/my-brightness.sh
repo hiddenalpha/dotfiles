@@ -11,16 +11,22 @@
 # +----------------------------------------------------------------------------
 
 
-input=$1
 cur=$( cat /sys/class/backlight/intel_backlight/brightness )
 min=$( cat /sys/class/backlight/intel_backlight/bl_power )
 max=$( cat /sys/class/backlight/intel_backlight/max_brightness )
 range=$( echo $max-$min | bc )
 
+curPercent=$( echo "($cur-$min)*100/$range" | bc )
 
-if [ -z $1 ] ;then
+if [ $# -eq 0 ] ;then
 	# No argument given. Print current brightness in percent.
-	echo $( echo "($cur-$min)*100/$range" | bc )
+	echo "$curPercent"
+	exit;
+elif [ "$1" == "--help" ] ;then
+	echo "examples:"
+	echo "	- $0 50   # Set brightness to 50%"
+	echo "	- $0 +10  # Increase brightness by 10%"
+	echo "	- $0 -10  # Decrease brightness by 10%"
 	exit;
 fi
 
@@ -35,23 +41,26 @@ fi
 level=$1
 
 
-if [ -z $level ] ;then
-	echo usage:  $0 level
-	echo
-	echo @param level:
-	echo "	a number between 0 and 100 indicating the brightness."
-	echo
-	exit
+if [[ "$level" =~ ^[+|-] ]] ;then
+	# Calculate absolute for specified relative value.
+	level=$( echo "0$level+$curPercent" | bc )
 fi
 
-
-if [ $input -lt 2 ] ;then
-	echo "You shouldn't set level below 1";
-	exit;
+# Fix max and min exceedations.
+if [ $level -lt 2 ] ;then
+	echo "[WARN ] Level '$level' set to 2.";
+	level=2
+elif [ $level -gt 100 ] ;then
+	echo "[WARN ] Level '$level' cut to 100."
+	level=100
 fi
 
+echo "[INFO ] New level is $level"
 
-nxt=$( echo $input*$range/100 | bc )
+# Translate percent to target scale
+nxt=$( echo $level*$range/100 | bc )
+
+# Write evaluated brightness
 
 # Variant using hardware (usually sudo required)
 echo $nxt | sudo tee /sys/class/backlight/intel_backlight/brightness > /dev/null
