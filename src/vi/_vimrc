@@ -185,10 +185,12 @@ if has("win32")
 
 else
 
+	"map <F5> a<C-R>=strftime('%s')<CR><Esc>
+	" Insert hash
+	inoremap <F5> <C-R>=system("date\|md5sum\|awk '{printf \"%s\",$1}'")<CR>
 	" insert current TS
-	map <F5> a<C-R>=strftime('%s')<CR><Esc>
-	map <S-F5> a<C-R>=strftime('%d.%m.%Y %H:%M:%S%z')<CR><Esc>
-	map <C-F5> a<C-R>=strftime('%Ec')<CR><Esc>
+	inoremap <S-F5> a<C-R>=strftime('%d.%m.%Y %H:%M:%S%z')<CR><Esc>
+	inoremap <C-F5> a<C-R>=strftime('%Ec')<CR><Esc>
 
 	command  OsTerminal  !x-terminal-emulator &
 	command  OsFileExplorer  !x-file-manager `pwd` &
