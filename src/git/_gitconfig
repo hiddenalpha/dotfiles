@@ -6,6 +6,15 @@
 [push]
 	default = simple
 [alias]
+	co = checkout
 	mylog = log --graph --all --date-order --decorate
 	myshortlog = log --graph --all --date-order --decorate --oneline
 	mybehinddevelop = log --oneline HEAD..origin/develop
+	mystatus = ! git branch && echo "-----------------" && git mylog -n4 && git status
+[color]
+	ui = always
+
+# Helpful to get mouse scrollable diff
+#[core]
+#	pager = less -R -+X
+
