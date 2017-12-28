@@ -1,4 +1,14 @@
 
+###############################################################################
+# Load rules:
+# | iptables-restore < rules.v4
+# If 'iptables-persistence' is not installed install it:
+# | aptitude install iptables-persistence
+# If 'iptables-persistence' is already installed simply write changes to config
+# file:
+# | iptables-save > /etc/iptables/rules.v4
+###############################################################################
+
 *filter
 
 # Loopback
