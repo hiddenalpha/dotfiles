@@ -2,9 +2,9 @@
 ###############################################################################
 # Load rules:
 # | ip6tables-restore < rules.v6
-# If 'iptables-persistence' is not installed install it:
-# | aptitude install iptables-persistence
-# If 'iptables-persistence' is already installed simply write changes to config
+# If 'iptables-persistent' is not installed install it:
+# | aptitude install iptables-persistent
+# If 'iptables-persistent' is already installed simply write changes to config
 # file:
 # | ip6tables-save > /etc/iptables/rules.v6
 ###############################################################################
