@@ -46,6 +46,14 @@
 #-A INPUT -p tcp -m state --state ESTABLISHED,RELATED --sport 80 -j ACCEPT
 #-A INPUT -p tcp -m state --state ESTABLISHED,RELATED --sport 443 -j ACCEPT
 
+# Web server (HTTPS)
+#-A INPUT -p tcp --dport 443 -j ACCEPT
+#-A OUTPUT -p tcp -m tcp --sport 443 -m state --state RELATED,ESTABLISHED -j ACCEPT
+
+# Web server (HTTP)
+#-A INPUT -p tcp -m state --state NEW,ESTABLISHED --dport 80 -j ACCEPT
+#-A OUTPUT -p tcp -m tcp --sport 80 -m state --state RELATED,ESTABLISHED -j ACCEPT
+
 # CUPS server (only required for remote access)
 #-A INPUT -p udp --dport 631 -j ACCEPT
 #-A INPUT -p tcp --dport 631 -j ACCEPT
