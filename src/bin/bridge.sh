@@ -27,14 +27,14 @@ if [ "$1" == "server" ] ; then
 	# Make iptables do NAT for incoming requests.
 	# 
 	sudo iptables -t nat -A POSTROUTING -o $PARENT_IFACE -j MASQUERADE
-	sudo iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-	sudo iptables -A FORWARD -i $SUBNET_IFACE -o $PARENT_IFACE -j ACCEPT
+	sudo iptables -I FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+	sudo iptables -I FORWARD -i $SUBNET_IFACE -o $PARENT_IFACE -j ACCEPT
 	# 
 	# Redirect DNS requests
 	# 
-	sudo iptables -I INPUT -p udp --dport 67 -i $SUBNET_IFACE -j ACCEPT
-	sudo iptables -I INPUT -p udp --dport 53 -s $SUBNET_IP/$SUBNET_CIDR -j ACCEPT
-	sudo iptables -I INPUT -p tcp --dport 53 -s $SUBNET_IP/$SUBNET_CIDR -j ACCEPT
+	sudo iptables -I FORWARD -p udp --dport 67 -i $SUBNET_IFACE -j ACCEPT
+	sudo iptables -I FORWARD -p udp --dport 53 -s $SUBNET_IP/$SUBNET_CIDR -j ACCEPT
+	sudo iptables -I FORWARD -p tcp --dport 53 -s $SUBNET_IP/$SUBNET_CIDR -j ACCEPT
 	#
 elif [ "$1" == "client" ] ; then
 	# Client
