@@ -2,7 +2,8 @@
 set lines=35 columns=100
 
 if has("win32")
-	set guifont=Consolas:h11:cANSI
+	set guifont=DejaVu_Sans_Mono:h11:cANSI
+"	set guifont=Consolas:h11:cANSI
 else
 	set guifont=Monospace\ 12
 endif

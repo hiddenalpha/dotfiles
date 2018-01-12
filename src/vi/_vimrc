@@ -175,9 +175,9 @@ map <silent> ,cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>/
 if has("win32")
 
 	" insert current TS
-	map <F5> a<C-R>=strftime('%Y%m%d%H%M%S')<CR><Esc>
-	map <S-F5> a<C-R>=strftime('%d.%m.%Y %H:%M:%S%z')<CR><Esc>
-	map <C-F5> a<C-R>=strftime('%Ec')<CR><Esc>
+	inoremap <F5> a<C-R>=strftime('%Y%m%d%H%M%S')<CR><Esc>
+	inoremap <S-F5> a<C-R>=strftime('%d.%m.%Y %H:%M:%S%z')<CR><Esc>
+	inoremap <C-F5> a<C-R>=strftime('%Ec')<CR><Esc>
 
 	" Printer -----------------------------
 	set printfont=Courier:h10
@@ -203,8 +203,7 @@ endif
 " filetype specific -----------------------------------------------------------
 
 autocmd FileType html setlocal shiftwidth=2 tabstop=2
-
-autocmd FileType javascript setlocal textwidth=100
+autocmd FileType xml  setlocal shiftwidth=2 tabstop=2
 
 " typescript
 autocmd BufNewFile,BufRead 	*.ts  setlocal ft=javascript
