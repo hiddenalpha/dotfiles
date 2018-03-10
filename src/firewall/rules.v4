@@ -54,6 +54,12 @@
 #-A INPUT -p tcp -m state --state NEW,ESTABLISHED --dport 80 -j ACCEPT
 #-A OUTPUT -p tcp -m tcp --sport 80 -m state --state RELATED,ESTABLISHED -j ACCEPT
 
+# CUPS client (to connect to printers)
+#-A OUTPUT -p udp --dport 161 -j ACCEPT
+#-A INPUT -p udp --sport 161 -j ACCEPT
+#-A OUTPUT -p tcp --dport 631 -j ACCEPT
+#-A INPUT -p tcp --sport 631 -j ACCEPT
+
 # CUPS server (only required for remote access)
 #-A INPUT -p udp --dport 631 -j ACCEPT
 #-A INPUT -p tcp --dport 631 -j ACCEPT
