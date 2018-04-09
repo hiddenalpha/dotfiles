@@ -29,8 +29,13 @@
 -A INPUT -p icmp -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 # NTP client
+# May the part "-m state --state ESTABLISHED,RELATED" has to be dropped (not tested yet).
 #-A OUTPUT -p udp --dport 123 -j ACCEPT
 #-A INPUT -p udp --sport 123 -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+# NTP Server
+#iptables -A INPUT -p udp --dport 123 -j ACCEPT
+#iptables -A OUTPUT -p udp --sport 123 -j ACCEPT
 
 # SSH client
 #-A OUTPUT -p tcp -m state --state NEW,ESTABLISHED --dport 22 -j ACCEPT
