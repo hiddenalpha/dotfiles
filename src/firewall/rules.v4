@@ -59,6 +59,26 @@
 #-A INPUT -p tcp -m state --state NEW,ESTABLISHED --dport 80 -j ACCEPT
 #-A OUTPUT -p tcp -m tcp --sport 80 -m state --state RELATED,ESTABLISHED -j ACCEPT
 
+# FTP client (control)
+#-A OUTPUT -p tcp --dport 21 -m state --state NEW,ESTABLISHED -j ACCEPT
+#-A INPUT  -p tcp --sport 21 -m state --state ESTABLISHED -j ACCEPT
+# (Passive mode)
+#-A OUTPUT -p tcp --dport 20 -m state --state ESTABLISHED -j ACCEPT
+#-A INPUT  -p tcp --sport 20 -m state --state ESTABLISHED,RELATED -j ACCEPT
+# (Active mode)
+#-A OUTPUT -p tcp --sport 1024: --dport 1024: -m state --state ESTABLISHED,RELATED,NEW -j ACCEPT
+#-A INPUT  -p tcp --sport 1024: --dport 1024: -m state --state ESTABLISHED -j ACCEPT
+
+# FTP server (control)
+#-A INPUT  -p tcp -m tcp --dport 21 -m conntrack --ctstate ESTABLISHED,NEW -j ACCEPT
+#-A OUTPUT -p tcp -m tcp --dport 21 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+# (Active mode)
+#-A INPUT  -p tcp -m tcp --dport 20 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+#-A OUTPUT -p tcp -m tcp --dport 20 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+# (Passive mode)
+#-A INPUT  -p tcp -m tcp --sport 1024: --dport 1024: -m conntrack --ctstate ESTABLISHED -j ACCEPT
+#-A OUTPUT -p tcp -m tcp --sport 1024: --dport 1024: -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+
 # CUPS client (to connect to printers)
 #-A OUTPUT -p udp --dport 161 -j ACCEPT
 #-A INPUT -p udp --sport 161 -j ACCEPT
