@@ -108,9 +108,9 @@
 -A FORWARD -j LOG --log-prefix "iptable-bad-fwd: " --log-level 6
 -A OUTPUT -j LOG --log-prefix "iptable-bad-out: " --log-level 6
 
-# Disallow any non-whitelisted packets
--A INPUT -j REJECT
--A FORWARD -j REJECT
+# Disallow any non-whitelisted packets (Use either DROP or REJECT. Your choise)
+-A INPUT -j DROP
+-A FORWARD -j DROP
 -A OUTPUT -j REJECT
 
 COMMIT
