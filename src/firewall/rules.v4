@@ -85,6 +85,10 @@
 #-A OUTPUT -p tcp --dport 631 -j ACCEPT
 #-A INPUT -p tcp --sport 631 -j ACCEPT
 
+# Socket printing client
+#-A OUTPUT -p tcp -m tcp --dport 9100 -j ACCEPT
+#-A INPUT -p tcp -m state --state ESTABLISHED,RELATED --sport 9100 -j ACCEPT
+
 # CUPS server (only required for remote access)
 #-A INPUT -p udp --dport 631 -j ACCEPT
 #-A INPUT -p tcp --dport 631 -j ACCEPT
