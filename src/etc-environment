@@ -4,4 +4,6 @@
 GTK2_RC_FILES=/usr/share/themes/Adwaita-dark/gtk-2.0/gtkrc
 # .. for GTK-3
 GTK_THEME=Adwaita:dark
+# .. Qt 5 (needs 'qt5-style-plugins' to be installed)
+QT_QPA_PLATFORMTHEME=gtk2
 
