@@ -1,0 +1,7 @@
+
+# Configure UI colors
+# .. for GTK-2
+GTK2_RC_FILES=/usr/share/themes/Adwaita-dark/gtk-2.0/gtkrc
+# .. for GTK-3
+GTK_THEME=Adwaita:dark
+

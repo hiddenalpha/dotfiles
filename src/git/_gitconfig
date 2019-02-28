@@ -6,11 +6,8 @@
 [push]
 	default = simple
 [alias]
-	co = checkout
-	mylog = log --graph --all --date-order --decorate
-	myshortlog = log --graph --all --date-order --decorate --oneline
-	mybehinddevelop = log --oneline HEAD..origin/develop
-	mystatus = ! git branch && echo "-----------------" && git mylog -n4 && git status
+	mylog = log --graph --decorate
+	s = status
 [color]
 	ui = always
 
