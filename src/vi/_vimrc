@@ -170,6 +170,18 @@ map <silent> ,cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<
 map <silent> ,cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
 
 
+" YCM config ------------------------------------------------------------------
+
+command YcmEnable call YcmEnable()
+function YcmEnable()
+	unlet b:ycm_largefile
+endfunction
+command YcmDisable call YcmDisable()
+function YcmDisable()
+	let b:ycm_largefile = 1
+endfunction
+
+
 " OS integration --------------------------------------------------------------
 
 if has("win32")
