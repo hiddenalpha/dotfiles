@@ -25,17 +25,16 @@
 
 # Ping client
 -A OUTPUT -p icmp -j ACCEPT
-#-A INPUT -p icmp -m state --state NEW --icmp-type 8 -j ACCEPT
 -A INPUT  -p icmp -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 # NTP client
 # May the part "-m state --state ESTABLISHED,RELATED" has to be dropped (not tested yet).
-#-A OUTPUT -p udp --dport 123 -j ACCEPT
-#-A INPUT -p udp --sport 123 -m state --state ESTABLISHED,RELATED -j ACCEPT
+-A OUTPUT -p udp --dport 123 -j ACCEPT
+-A INPUT -p udp --sport 123 -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 # NTP Server
-#iptables -A INPUT -p udp --dport 123 -j ACCEPT
-#iptables -A OUTPUT -p udp --sport 123 -j ACCEPT
+#-A INPUT -p udp --dport 123 -j ACCEPT
+#-A OUTPUT -p udp --sport 123 -j ACCEPT
 
 # SSH client
 #-A OUTPUT -p tcp -m state --state NEW,ESTABLISHED --dport 22 -j ACCEPT
@@ -107,14 +106,30 @@
 #-A OUTPUT -p tcp --dport 993 -j ACCEPT
 #-A INPUT -p tcp -m state --state ESTABLISHED,RELATED --sport 993 -j ACCEPT
 
+# Allow all for vbox host-only network
+#-A OUTPUT -o vboxnet0 -j ACCEPT
+#-A INPUT  -i vboxnet0 -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+# Allow all vor vagrant vbox network
+#-A OUTPUT -o vboxnet1 -j ACCEPT
+#-A INPUT  -i vboxnet1 -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+# Misc client ports for tmp experiments.
+#-A OUTPUT -p tcp -m tcp --match multiport --dports 1230:1239 -j ACCEPT
+#-A INPUT -p tcp -m state --state ESTABLISHED,RELATED --match multiport --sports 1230:1239 -j ACCEPT
+
+# Misc server ports for tmp experiments.
+#-A INPUT -p tcp --match multiport --dports 1230:1239 -j ACCEPT
+#-A OUTPUT -p tcp -m tcp --match multiport --sports 1230:1239 -m state --state RELATED,ESTABLISHED -j ACCEPT
+
 # Log blocked connection attemps
--A INPUT   -j LOG --log-prefix "iptableBadIn:  " --log-level 6
--A FORWARD -j LOG --log-prefix "iptableBadFwd: " --log-level 6
--A OUTPUT  -j LOG --log-prefix "iptableBadOut: " --log-level 6
+#-A INPUT   -j LOG --log-prefix "FwBadIn:  " --log-level 6
+-A FORWARD -j LOG --log-prefix "FwBadFwd: " --log-level 6
+-A OUTPUT  -j LOG --log-prefix "FwBadOut: " --log-level 6
 
 # Disallow any non-whitelisted packets (Use either DROP or REJECT. Your choise)
 -A INPUT   -j DROP
--A FORWARD -j DROP
+-A FORWARD -j REJECT
 -A OUTPUT  -j REJECT
 
 COMMIT
