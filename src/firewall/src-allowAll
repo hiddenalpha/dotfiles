@@ -1,0 +1,18 @@
+
+###############################################################################
+# Disable v4 filtering completely
+#
+###############################################################################
+
+*filter
+
+# Loopback
+-A INPUT  -i lo -j ACCEPT
+-A OUTPUT -o lo -j ACCEPT
+
+-P INPUT   ACCEPT
+-P OUTPUT  ACCEPT
+-P FORWARD ACCEPT
+
+COMMIT
+
