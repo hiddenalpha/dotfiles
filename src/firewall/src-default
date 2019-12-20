@@ -106,6 +106,10 @@
 #-A OUTPUT -p tcp --dport 993 -j ACCEPT
 #-A INPUT -p tcp -m state --state ESTABLISHED,RELATED --sport 993 -j ACCEPT
 
+# Whois client
+#-A OUTPUT -p tcp --dport 43 -j ACCEPT
+#-A INPUT  -p tcp --sport 43 -m state --state ESTABLISHED,RELATED -j ACCEPT
+
 # Allow all for vbox host-only network
 #-A OUTPUT -o vboxnet0 -j ACCEPT
 #-A INPUT  -i vboxnet0 -m state --state ESTABLISHED,RELATED -j ACCEPT
