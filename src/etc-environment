@@ -7,3 +7,7 @@ GTK_THEME=Adwaita:dark
 # .. Qt 5 (needs 'qt5-style-plugins' to be installed)
 QT_QPA_PLATFORMTHEME=gtk2
 
+# Disable QT DPI scaling. Can be really helpful for eg vlc in a multi-monitor
+# setup.
+QT_AUTO_SCREEN_SCALE_FACTOR=0
+

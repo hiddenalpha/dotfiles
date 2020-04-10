@@ -7,7 +7,10 @@
 	default = simple
 [alias]
 	mylog = log --graph --decorate
+    diffc = diff --cache
+    diffh = diff HEAD
 	s = status
+    co = checkout
 [color]
 	ui = always
 

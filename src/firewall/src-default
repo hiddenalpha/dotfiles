@@ -16,21 +16,23 @@
 -A OUTPUT -o lo -j ACCEPT
 
 # DNS client
--A OUTPUT -p udp --dport 53 -m udp -j ACCEPT
--A INPUT  -p udp --sport 53 -m state --state ESTABLISHED,RELATED -j ACCEPT
+#-A OUTPUT -p udp --dport 53 -m udp -j ACCEPT
+#-A INPUT  -p udp --sport 53 -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 # DHCP client
--A OUTPUT -p udp --dport 67:68 -j ACCEPT
--A INPUT  -p udp -m state --state ESTABLISHED,RELATED --sport 67:68 -j ACCEPT
+#-A OUTPUT -p udp --dport 67:68 -j ACCEPT
+#-A INPUT  -p udp -m state --state ESTABLISHED,RELATED --sport 67:68 -j ACCEPT
 
 # Ping client
--A OUTPUT -p icmp -j ACCEPT
--A INPUT  -p icmp -m state --state ESTABLISHED,RELATED -j ACCEPT
+#-A OUTPUT -p icmp -j ACCEPT
+#-A INPUT  -p icmp -m state --state ESTABLISHED,RELATED -j ACCEPT
+## Do we really need this one?
+#-A INPUT -p icmp -m state --state NEW --icmp-type 8 -j ACCEPT
 
 # NTP client
 # May the part "-m state --state ESTABLISHED,RELATED" has to be dropped (not tested yet).
--A OUTPUT -p udp --dport 123 -j ACCEPT
--A INPUT -p udp --sport 123 -m state --state ESTABLISHED,RELATED -j ACCEPT
+#-A OUTPUT -p udp --dport 123 -j ACCEPT
+#-A INPUT -p udp --sport 123 -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 # NTP Server
 #-A INPUT -p udp --dport 123 -j ACCEPT
@@ -127,13 +129,13 @@
 #-A OUTPUT -p tcp -m tcp --match multiport --sports 1230:1239 -m state --state RELATED,ESTABLISHED -j ACCEPT
 
 # Log blocked connection attemps
-#-A INPUT   -j LOG --log-prefix "FwBadIn:  " --log-level 6
--A FORWARD -j LOG --log-prefix "FwBadFwd: " --log-level 6
--A OUTPUT  -j LOG --log-prefix "FwBadOut: " --log-level 6
+#-A INPUT   -j LOG --log-prefix "fwBadIn:  " --log-level 6
+-A FORWARD -j LOG --log-prefix "fwBadFwd: " --log-level 6
+-A OUTPUT  -j LOG --log-prefix "fwBadOut: " --log-level 6
 
 # Disallow any non-whitelisted packets (Use either DROP or REJECT. Your choise)
 -A INPUT   -j DROP
--A FORWARD -j REJECT
+-A FORWARD -j DROP
 -A OUTPUT  -j REJECT
 
 COMMIT
