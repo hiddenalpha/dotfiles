@@ -2,11 +2,11 @@
 # "~/.config/openbox/autostart.sh"
 #
 
-source ~/.config/user/startup-gui
+source ~/.config/user/setup-gui
 
 lxpanel &
 xscreensaver &
-~/.bin/wallpaper-set.sh
+~/.bin/wallpaper-set.sh &
 
 x-terminal-emulator &
 
