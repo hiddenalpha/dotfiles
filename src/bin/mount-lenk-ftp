@@ -1,4 +1,0 @@
-#!/bin/bash
-
-sshfs lenk.hiddenalpha.ch@hiddenalpha.ch:/ ~/mnt/lenk-ftp -p 5544
-

@@ -1,4 +1,0 @@
-#!/bin/bash
-
-fusermount -u ~/mnt/lenk-ftp
-
