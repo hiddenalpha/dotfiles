@@ -83,7 +83,6 @@ colorscheme koehler
 set nocursorline
 set number
 set hidden  " allows to switch away from unsaved buffer
-"set relativenumber
 set linebreak
 set hlsearch
 set showcmd
@@ -106,6 +105,7 @@ set autoindent
 set nosmartindent
 set shiftwidth=4
 set tabstop=4
+set expandtab
 vmap > >gv
 vmap <Tab> >gv
 vmap < <gv
@@ -143,21 +143,16 @@ map <c-h> <c-w>h
 map <c-l> <c-w>l
 
 " closeBuffer
-nmap <F4> :bp<CR>:bd#<CR>
-imap <F4> <Esc>:bp<CR>:bd#<CR>
-vmap <F4> <Esc>:bp<CR>:bd#<CR>
+nnoremap <F4> :bp<CR>:bd#<CR>
 
 " change cwd to current file
-map cdc :cd %:p:h<CR>:pwd<CR>
+nnoremap cdc :cd %:p:h<CR>:pwd<CR>
 
 " Not searchNext. Do only highlight word under cursor.
 nmap * *N
 
-" Execute previous one now
-:cd %:p:h
-
-" save with ctrl-s
-nmap <C-s> :up<CR>
+" save with ctrl-s (useless if term emu catches keymapping)
+nnoremap <C-s> :up<CR>
 
 " commenting
 autocmd FileType c,cpp,java,php,javascript,html let b:comment_leader = '//'
@@ -197,7 +192,6 @@ if has("win32")
 
 else
 
-	"map <F5> a<C-R>=strftime('%s')<CR><Esc>
 	" Insert hash
 	inoremap <F5> <C-R>=system("date\|md5sum\|awk '{printf \"%s\",$1}'")<CR>
 	" insert current TS
@@ -206,7 +200,7 @@ else
 
 	command  OsTerminal  !x-terminal-emulator &
 	command  OsFileExplorer  !x-file-manager `pwd` &
-	command  OsIceweasel  !iceweasel `pwd` &
+	command  OsFirefox  !firefox `pwd` &
 	command  OsChromium  !chromium `pwd` &
 
 endif
@@ -216,6 +210,7 @@ endif
 
 autocmd FileType html setlocal shiftwidth=2 tabstop=2
 autocmd FileType xml  setlocal shiftwidth=2 tabstop=2
+autocmd FileType Makefile setl noexpandtab
 
 " typescript
 autocmd BufNewFile,BufRead 	*.ts  setlocal ft=javascript

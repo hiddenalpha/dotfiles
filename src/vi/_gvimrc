@@ -2,8 +2,8 @@
 set lines=35 columns=100
 
 if has("win32")
-	set guifont=DejaVu_Sans_Mono:h11:cANSI
-"	set guifont=Consolas:h11:cANSI
+	"set guifont=DejaVu_Sans_Mono:h11:cANSI
+	set guifont=Consolas:h11:cANSI
 else
 	set guifont=Monospace\ 12
 endif
@@ -12,8 +12,9 @@ set guioptions-=m  " remove Menu bar
 set guioptions-=T  " remove toolbar
 set guioptions-=L  " remove left scrollbar
 set guioptions-=r  "remove right scrollbar
-set mouse=n
 
+" This is vim! So please stop using that stupid mouse!
+set mouse=n
 nnoremap <LeftMouse> m'<LeftMouse>
 nnoremap <LeftRelease> <LeftRelease>g``
 
