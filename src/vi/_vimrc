@@ -165,6 +165,11 @@ map <silent> ,cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<
 map <silent> ,cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
 
 
+" NERDTree config -------------------------------------------------------------
+
+nnoremap ° :NERDTreeToggle<CR>
+
+
 " YCM config ------------------------------------------------------------------
 
 command YcmEnable call YcmEnable()

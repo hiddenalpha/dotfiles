@@ -2,6 +2,5 @@
 # "~/.config/openbox/environment"
 #
 
-# Make sure launchers (eg gmrun) are able to find custom executables.
-export PATH=~/.bin:$PATH
+source ~/.config/user/setup-env
 
