@@ -1,4 +1,0 @@
-#!/bin/bash
-
-sshfs andreas.fankhauser@sftp.iet-gibb.ch:/ ~/mnt/gibb-ftp
-

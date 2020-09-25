@@ -1,20 +1,25 @@
+
 [user]
-	email = andyfankhauser@gmx.ch
-	name = user@host
+email = andyfankhauser@gmx.ch
+name = user@host
+
 [merge]
-	tool = meld
+tool = meld
+
 [push]
-	default = simple
+default = simple
+
 [alias]
-	mylog = log --graph --decorate
-    diffc = diff --cache
-    diffh = diff HEAD
-	s = status
-    co = checkout
+mylog = log --graph --decorate
+diffc = diff --cache
+diffh = diff HEAD
+s = status
+co = checkout
+
 [color]
-	ui = always
+ui = always
 
 # Helpful to get mouse scrollable diff
 #[core]
-#	pager = less -R -+X
+#pager = less -R -+X
 

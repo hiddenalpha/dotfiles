@@ -106,11 +106,11 @@ set nosmartindent
 set shiftwidth=4
 set tabstop=4
 set expandtab
-vmap > >gv
-vmap <Tab> >gv
-vmap < <gv
-vmap <S-Tab> <gv
-imap <S-Tab> <Esc><<i
+vnoremap > >gv
+vnoremap <Tab> >gv
+vnoremap < <gv
+vnoremap <S-Tab> <gv
+inoremap <S-Tab> <Esc><<i
 
 function Indenting(indent, what, cols)
 	let spccol = repeat(' ', a:cols)
@@ -154,23 +154,13 @@ nmap * *N
 " save with ctrl-s (useless if term emu catches keymapping)
 nnoremap <C-s> :up<CR>
 
-" commenting
-autocmd FileType c,cpp,java,php,javascript,html let b:comment_leader = '//'
-autocmd FileType sh,ruby,python                 let b:comment_leader = '#'
-autocmd FileType conf,fstab                     let b:comment_leader = '#'
-autocmd FileType tex                            let b:comment_leader = '% '
-autocmd FileType mail                           let b:comment_leader = '> '
-autocmd FileType vim                            let b:comment_leader = '"'
-map <silent> ,cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
-map <silent> ,cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
 
-
-" NERDTree config -------------------------------------------------------------
+" NERDTree --------------------------------------------------------------------
 
 nnoremap ° :NERDTreeToggle<CR>
 
 
-" YCM config ------------------------------------------------------------------
+" YouCompleteMe ---------------------------------------------------------------
 
 command YcmEnable call YcmEnable()
 function YcmEnable()
@@ -213,10 +203,9 @@ endif
 
 " filetype specific -----------------------------------------------------------
 
-autocmd FileType html setlocal shiftwidth=2 tabstop=2
-autocmd FileType xml  setlocal shiftwidth=2 tabstop=2
+autocmd FileType html setl shiftwidth=2 tabstop=2
+autocmd FileType xml  setl shiftwidth=2 tabstop=2
 autocmd FileType Makefile setl noexpandtab
 
-" typescript
 autocmd BufNewFile,BufRead 	*.ts  setlocal ft=javascript
 

@@ -1,14 +1,4 @@
 
-###############################################################################
-# Setup env:
-# 	cp rules.v4.source /etc/iptables/rules.v4.source
-# 	aptitude install iptables-persistent
-# Load rules:
-# 	cat /etc/iptables/rules.v4.source | sudo iptables-restore
-# Persist currently loaded config:
-# 	sudo iptables-save | sudo tee /etc/iptables/rules.v4
-###############################################################################
-
 *filter
 
 # Loopback
@@ -120,11 +110,11 @@
 #-A OUTPUT -o vboxnet1 -j ACCEPT
 #-A INPUT  -i vboxnet1 -m state --state ESTABLISHED,RELATED -j ACCEPT
 
-# Misc client ports for tmp experiments.
+# Some client ports for debugging.
 #-A OUTPUT -p tcp -m tcp --match multiport --dports 1230:1239 -j ACCEPT
 #-A INPUT -p tcp -m state --state ESTABLISHED,RELATED --match multiport --sports 1230:1239 -j ACCEPT
 
-# Misc server ports for tmp experiments.
+# Some server ports for debugging.
 #-A INPUT -p tcp --match multiport --dports 1230:1239 -j ACCEPT
 #-A OUTPUT -p tcp -m tcp --match multiport --sports 1230:1239 -m state --state RELATED,ESTABLISHED -j ACCEPT
 
@@ -133,7 +123,7 @@
 -A FORWARD -j LOG --log-prefix "fwBadFwd: " --log-level 6
 -A OUTPUT  -j LOG --log-prefix "fwBadOut: " --log-level 6
 
-# Disallow any non-whitelisted packets (Use either DROP or REJECT. Your choise)
+# Disallow any non-whitelisted packets (Use either DROP or REJECT. Your choice)
 -A INPUT   -j DROP
 -A FORWARD -j DROP
 -A OUTPUT  -j REJECT

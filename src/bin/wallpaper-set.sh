@@ -1,4 +1,4 @@
 #!/bin/sh
 
-feh --randomize --bg-fill ~/.wallpaper/*
+feh --randomize --bg-fill ~/.config/wallpapers/*
 
