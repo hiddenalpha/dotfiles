@@ -90,6 +90,9 @@ set textwidth=79
 set formatoptions=roq
 set wildmenu
 
+set laststatus=2  " Always display filename
+"set statusline+=%F  " '- with full path
+
 if line('$') > 10000
 	syntax off
 else
