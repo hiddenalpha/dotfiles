@@ -160,7 +160,9 @@ nnoremap <C-s> :up<CR>
 
 " NERDTree --------------------------------------------------------------------
 
-nnoremap ° :NERDTreeToggle<CR>
+"set rtp+=/opt/nerdtree
+"source /opt/nerdtree/plugin/NERD_tree.vim
+"nnoremap ° :NERDTreeToggle<CR>
 
 
 " YouCompleteMe ---------------------------------------------------------------
