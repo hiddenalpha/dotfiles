@@ -1,0 +1,25 @@
+#!/bin/bash
+
+
+source functions
+
+
+function main {
+
+    # Get current volume
+    local vol=$(my-pa-getdefaultsinkvol)
+
+    # Increase it
+    vol=$(expr $vol + 3)
+
+    # Make sure to not exceed limits.
+    if [ $vol -lt   0 ]; then vol=0  ; fi
+    if [ $vol -gt 100 ]; then vol=100; fi
+
+    # Set new volume.
+    my-pa-setdefaultsinkvolpercent $vol
+}
+
+
+main "$@"
+
