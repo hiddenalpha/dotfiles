@@ -9,15 +9,24 @@
 #-A OUTPUT -p udp --dport 53 -m udp -j ACCEPT
 #-A INPUT  -p udp --sport 53 -m state --state ESTABLISHED,RELATED -j ACCEPT
 
+# mDNS (zeroconf, bonjour)
+#-A INPUT  -p udp --sport 5353 --dport 5353 -j ACCEPT
+#-A OUTPUT -p udp --dport 5353 --sport 5353 -j ACCEPT
+
 # DHCP client
 #-A OUTPUT -p udp --dport 67:68 -j ACCEPT
 #-A INPUT  -p udp -m state --state ESTABLISHED,RELATED --sport 67:68 -j ACCEPT
 
-# Ping client
+# Ping
 #-A OUTPUT -p icmp -j ACCEPT
+#-A INPUT  -p icmp -m state --state NEW --icmp-type 8 -j ACCEPT
 #-A INPUT  -p icmp -m state --state ESTABLISHED,RELATED -j ACCEPT
-## Do we really need this one?
-#-A INPUT -p icmp -m state --state NEW --icmp-type 8 -j ACCEPT
+
+# Traceroute client
+#-A OUTPUT -p udp -m udp --match multiport --dports 33434:33523 -j ACCEPT
+
+# Traceroute server
+#-A INPUT -p udp --dport 33434:33523 -j REJECT
 
 # NTP client
 # May the part "-m state --state ESTABLISHED,RELATED" has to be dropped (not tested yet).
@@ -35,6 +44,14 @@
 # SSH server
 #-A INPUT -p tcp -m state --state NEW,ESTABLISHED --dport 22 -j ACCEPT
 #-A OUTPUT -p tcp -m state --state ESTABLISHED --sport 22 -j ACCEPT
+
+# OpenVPN client
+#-A OUTPUT -p udp -m state --state NEW,ESTABLISHED --dport 1194 -j ACCEPT
+#-A INPUT  -p udp -m state --state ESTABLISHED --sport 1194 -j ACCEPT
+
+# OpenVPN server
+#-A INPUT  -p udp -m state --state NEW,ESTABLISHED --dport 1194 -j ACCEPT
+#-A OUTPUT -p udp -m state --state ESTABLISHED --sport 1194 -j ACCEPT
 
 # Web client
 #-A OUTPUT -p tcp -m tcp --dport 80 -j ACCEPT
@@ -104,28 +121,28 @@
 
 # Allow all for vbox host-only network
 #-A OUTPUT -o vboxnet0 -j ACCEPT
-#-A INPUT  -i vboxnet0 -m state --state ESTABLISHED,RELATED -j ACCEPT
-
-# Allow all vor vagrant vbox network
-#-A OUTPUT -o vboxnet1 -j ACCEPT
-#-A INPUT  -i vboxnet1 -m state --state ESTABLISHED,RELATED -j ACCEPT
+#-A INPUT  -i vboxnet0 -j ACCEPT
 
 # Some client ports for debugging.
-#-A OUTPUT -p tcp -m tcp --match multiport --dports 1230:1239 -j ACCEPT
-#-A INPUT -p tcp -m state --state ESTABLISHED,RELATED --match multiport --sports 1230:1239 -j ACCEPT
+#-A OUTPUT -p tcp -m tcp --match multiport --dports 10000:10010 -j ACCEPT
+#-A INPUT  -p tcp -m state --state ESTABLISHED,RELATED --match multiport --sports 10000:10010 -j ACCEPT
+#-A OUTPUT -p udp -m udp --match multiport --dports 10000:10010 -j ACCEPT
+#-A INPUT  -p udp -m state --state ESTABLISHED,RELATED --match multiport --sports 10000:10010 -j ACCEPT
 
 # Some server ports for debugging.
-#-A INPUT -p tcp --match multiport --dports 1230:1239 -j ACCEPT
-#-A OUTPUT -p tcp -m tcp --match multiport --sports 1230:1239 -m state --state RELATED,ESTABLISHED -j ACCEPT
+#-A INPUT  -p tcp --match multiport --dports 10000:10010 -j ACCEPT
+#-A OUTPUT -p tcp -m tcp --match multiport --sports 10000:10010 -m state --state RELATED,ESTABLISHED -j ACCEPT
+#-A INPUT  -p udp --match multiport --dports 10000:10010 -j ACCEPT
+#-A OUTPUT -p udp -m udp --match multiport --sports 10000:10010 -m state --state RELATED,ESTABLISHED -j ACCEPT
 
 # Log blocked connection attemps
-#-A INPUT   -j LOG --log-prefix "fwBadIn:  " --log-level 6
--A FORWARD -j LOG --log-prefix "fwBadFwd: " --log-level 6
--A OUTPUT  -j LOG --log-prefix "fwBadOut: " --log-level 6
+#-A INPUT   -j LOG --log-prefix "FwBadIn:  " --log-level 6
+-A FORWARD -j LOG --log-prefix "FwBadFwd: " --log-level 6
+-A OUTPUT  -j LOG --log-prefix "FwBadOut: " --log-level 6
 
 # Disallow any non-whitelisted packets (Use either DROP or REJECT. Your choice)
 -A INPUT   -j DROP
--A FORWARD -j DROP
+-A FORWARD -j REJECT
 -A OUTPUT  -j REJECT
 
 COMMIT
