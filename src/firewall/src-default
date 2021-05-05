@@ -5,6 +5,18 @@
 -A INPUT  -i lo -j ACCEPT
 -A OUTPUT -o lo -j ACCEPT
 
+# Drop corrupt (evil) null packets.
+-A INPUT -p tcp –tcp-flags ALL NONE -j DROP
+
+# Drop corrupt (evil) syn packets.
+-A INPUT -p tcp ! –syn -m state –state NEW -j DROP
+
+# Drop XMAS (corrupt/evil) packets
+-A INPUT -p tcp –tcp-flags ALL ALL -j DROP
+
+# Anti DoS attack
+#-A INPUT -p tcp --dport 1:1024 -m limit --limit 1/seconds --limit-burst 100 -j ACCEPT
+
 # DNS client
 #-A OUTPUT -p udp --dport 53 -m udp -j ACCEPT
 #-A INPUT  -p udp --sport 53 -m state --state ESTABLISHED,RELATED -j ACCEPT
@@ -17,10 +29,13 @@
 #-A OUTPUT -p udp --dport 67:68 -j ACCEPT
 #-A INPUT  -p udp -m state --state ESTABLISHED,RELATED --sport 67:68 -j ACCEPT
 
-# Ping
-#-A OUTPUT -p icmp -j ACCEPT
-#-A INPUT  -p icmp -m state --state NEW --icmp-type 8 -j ACCEPT
-#-A INPUT  -p icmp -m state --state ESTABLISHED,RELATED -j ACCEPT
+# Ping client
+#-A OUTPUT -p icmp --icmp-type echo-request -j ACCEPT
+#-A INPUT  -p icmp --icmp-type echo-reply   -j ACCEPT
+
+# Ping server
+#-A INPUT  -p icmp --icmp-type echo-request -j ACCEPT
+#-A OUTPUT -p icmp --icmp-type echo-reply   -j ACCEPT
 
 # Traceroute client
 #-A OUTPUT -p udp -m udp --match multiport --dports 33434:33523 -j ACCEPT
