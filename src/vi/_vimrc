@@ -86,11 +86,13 @@ set hidden  " allows to switch away from unsaved buffer
 set linebreak
 set hlsearch
 set showcmd
-set textwidth=79
+set textwidth=0
 set formatoptions=roq
-set wildmenu
+set scrolloff=1
+set listchars=eol:$,tab:>-
+"set wildmenu
 
-set laststatus=2  " Always display filename
+"set laststatus=2  " Always display filename
 "set statusline+=%F  " '- with full path
 
 if line('$') > 10000
@@ -133,8 +135,6 @@ function IndentConvert(line1, line2, what, cols)
 endfunction
 command -nargs=? -range=% Space2Tab call IndentConvert(<line1>,<line2>,0,<q-args>)
 command -nargs=? -range=% Tab2Space call IndentConvert(<line1>,<line2>,1,<q-args>)
-command -nargs=? -range=% RetabIndent call IndentConvert(<line1>,<line2>,&et,<q-args>)
-command -nargs=1 -range   SuperRetab <line1>,<line2>s/\v%(^ *)@<= {<args>}/\t/g
 
 
 " misc ------------------------------------------------------------------------
@@ -195,7 +195,7 @@ else
 	" Insert hash
 	inoremap <F5> <C-R>=system("date\|md5sum\|awk '{printf \"%s\",$1}'")<CR>
 	" insert current TS
-	inoremap <S-F5> a<C-R>=strftime('%d.%m.%Y %H:%M:%S%z')<CR><Esc>
+	inoremap <S-F5> <C-R>=strftime('%Y-%m-%d_%H:%M:%S%z')<CR><Esc>
 	inoremap <C-F5> a<C-R>=strftime('%Ec')<CR><Esc>
 
 	command  OsTerminal  !x-terminal-emulator &
