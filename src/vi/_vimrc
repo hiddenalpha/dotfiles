@@ -1,105 +1,110 @@
 
 if has("win32")
 
-	set diffexpr=MyDiff()
+    set diffexpr=MyDiff()
+    function MyDiff()
+        let opt = '-a --binary '
+        if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+        if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+        let arg1 = v:fname_in
+        if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+        let arg2 = v:fname_new
+        if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+        let arg3 = v:fname_out
+        if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+        if $VIMRUNTIME =~ ' '
+            if &sh =~ '\<cmd'
+                if empty(&shellxquote)
+                    let l:shxq_sav = ''
+                    set shellxquote&
+                endif
+                let cmd = '"' . $VIMRUNTIME . '\diff"'
+            else
+                let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+            endif
+        else
+            let cmd = $VIMRUNTIME . '\diff'
+        endif
+        silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3
+        if exists('l:shxq_sav')
+            let &shellxquote=l:shxq_sav
+        endif
+    endfunction
 
-	function MyDiff()
-		let opt = '-a --binary '
-		if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
-		if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
-		let arg1 = v:fname_in
-		if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
-		let arg2 = v:fname_new
-		if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
-		let arg3 = v:fname_out
-		if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
-		if $VIMRUNTIME =~ ' '
-			if &sh =~ '\<cmd'
-				if empty(&shellxquote)
-					let l:shxq_sav = ''
-					set shellxquote&
-				endif
-				let cmd = '"' . $VIMRUNTIME . '\diff"'
-			else
-				let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
-			endif
-		else
-			let cmd = $VIMRUNTIME . '\diff'
-		endif
-		silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3
-		if exists('l:shxq_sav')
-			let &shellxquote=l:shxq_sav
-		endif
-	endfunction
-
-	function Formatxml()
-		if !empty( glob($USERPROFILE."/bin/xmllint.exe") )
-			echo "xmllint --format"
-			silent %!set xmllint_indent=	& \%userprofile\%/bin/xmllint --format -
-		else
-			echo "vimscript --format"
-			%j!            " ganze Datei auf eine Zeile
-			%s~>\s*<~><~g  " Trim content und zwischenraum
-			%s~<~\r<~g     " Jeden Tag auf eine neue Zeile
-			%g~^\s*$~d     " alle leerZeilen entfernen
-			%g!~>$~j!      " überall, wo text (also kein Tag) am ende Steht mach join
-			if line('$') < 500
-				" einrückung erstellen (filetype muss auf xml sein)
-				norm gg=G
-			endif
-		endif
-	endfunction
+    function Formatxml()
+        if !empty( glob($USERPROFILE."/bin/xmllint.exe") )
+            echo "xmllint --format"
+            silent %!set xmllint_indent="  " & \%userprofile\%/bin/xmllint --format -
+        else
+            echo "vimscript --format (WARNING: values trimmed)"
+            %j!            " ganze Datei auf eine Zeile
+            %s~>\s*<~><~g  " Trim content und zwischenraum
+            %s~<~\r<~g     " Jeden Tag auf eine neue Zeile
+            %g~^\s*$~d     " alle leerZeilen entfernen
+            %g!~>$~j!      " überall, wo text (also kein Tag) am ende Steht mach join
+            if line('$') < 500
+                " einrückung erstellen (filetype muss auf xml sein)
+                " nur bis 500 Zeilen. sonst wirds langsam.
+                norm gg=G
+            endif
+         endif
+    endfunction
 
 else " NOT win32
 
-	function Formatxml()
-		   if !empty( glob("/usr/bin/xmllint") )
-				 echo "xmllint --format"
-				 silent %!XMLLINT_INDENT="	" /usr/bin/xmllint --format -
-		   else
-				 echo "vimscript --format"
-				 %j!            " ganze Datei auf eine Zeile
-				 %s~>\s*<~><~g  " Trim content und zwischenraum
-				 %s~<~\r<~g     " Jeden Tag auf eine neue Zeile
-				 %g~^\s*$~d     " alle leerZeilen entfernen
-				 %g!~>$~j!      " überall, wo text (also kein Tag) am ende Steht mach join
-				 if line('$') < 500
-						" einrückung erstellen (filetype muss auf xml sein)
-					"    norm gg=G
-				 endif
-		   endif
-	endfunction
+    function Formatxml()
+        if !empty( glob("/usr/bin/xmllint") )
+            echo "xmllint --format"
+            silent %!XMLLINT_INDENT="  " /usr/bin/xmllint --format -
+        else
+            echo "vimscript --format"
+            %j!            " ganze Datei auf eine Zeile
+            %s~>\s*<~><~g  " Trim content und zwischenraum
+            %s~<~\r<~g     " Jeden Tag auf eine neue Zeile
+            %g~^\s*$~d     " alle leerZeilen entfernen
+            %g!~>$~j!      " überall, wo text (also kein Tag) am ende Steht mach join
+            if line('$') < 500
+                " einrückung erstellen (filetype muss auf xml sein)
+                norm gg=G
+            endif
+        endif
+    endfunction
 
 endif
 
-
-
-
-set nobackup
-set nowritebackup
-set noswapfile
 
 colorscheme koehler
-set nocursorline
-set number
-set hidden  " allows to switch away from unsaved buffer
+set autoindent
+set clipboard=
+set backspace=2
+set encoding=utf-8
 set linebreak
+set nobackup
+set nowritebackup
+set expandtab
+set noswapfile
+set formatoptions=roq
+set number
+set hidden " <- Allow to switch buffer even it is not saved.
+set ruler
 set hlsearch
+set scrolloff=1 " <- Keep free lines top/bottom before/after cursor
+set tabstop=4
+set shiftwidth=4
 set showcmd
 set textwidth=0
-set formatoptions=roq
-set scrolloff=1
 set listchars=eol:$,tab:>-
 "set wildmenu
+"set laststatus=2  " 2: Always display filename
+"set statusline+=%F " '- With full path
+set spelllang=en,de
+set showbreak=↳\ 
+set sidescroll=8
+syntax on
 
-"set laststatus=2  " Always display filename
-"set statusline+=%F  " '- with full path
-
-if line('$') > 10000
-	syntax off
-else
-	syntax on
-endif
+" Printer -----------------------------
+"set printfont=Courier:h10
+"set printoptions=header:2,left:10mm,right:8mm,bottom:10mm,number:y,paper:A4,portrait:y,syntax:y
 
 let mapleader = ','
 
@@ -110,7 +115,6 @@ set autoindent
 set nosmartindent
 set shiftwidth=4
 set tabstop=4
-set expandtab
 vnoremap > >gv
 vnoremap <Tab> >gv
 vnoremap < <gv
@@ -118,20 +122,20 @@ vnoremap <S-Tab> <gv
 inoremap <S-Tab> <Esc><<i
 
 function Indenting(indent, what, cols)
-	let spccol = repeat(' ', a:cols)
-	let result = substitute(a:indent, spccol, '\t', 'g')
-	let result = substitute(result, ' \+\ze\t', '', 'g')
-	if a:what == 1
-		let result = substitute(result, '\t', spccol, 'g')
-	endif
-	return result
+    let spccol = repeat(' ', a:cols)
+    let result = substitute(a:indent, spccol, '\t', 'g')
+    let result = substitute(result, ' \+\ze\t', '', 'g')
+    if a:what == 1
+        let result = substitute(result, '\t', spccol, 'g')
+    endif
+    return result
 endfunction
 function IndentConvert(line1, line2, what, cols)
-	let savepos = getpos('.')
-	let cols = empty(a:cols) ? &tabstop : a:cols
-	execute a:line1 . ',' . a:line2 . 's/^\s\+/\=Indenting(submatch(0), a:what, cols)/e'
-	call histdel('search', -1)
-	call setpos('.', savepos)
+    let savepos = getpos('.')
+    let cols = empty(a:cols) ? &tabstop : a:cols
+    execute a:line1 . ',' . a:line2 . 's/^\s\+/\=Indenting(submatch(0), a:what, cols)/e'
+    call histdel('search', -1)
+    call setpos('.', savepos)
 endfunction
 command -nargs=? -range=% Space2Tab call IndentConvert(<line1>,<line2>,0,<q-args>)
 command -nargs=? -range=% Tab2Space call IndentConvert(<line1>,<line2>,1,<q-args>)
@@ -140,22 +144,30 @@ command -nargs=? -range=% Tab2Space call IndentConvert(<line1>,<line2>,1,<q-args
 " misc ------------------------------------------------------------------------
 
 " buffer window
-map <c-j> <c-w>j
-map <c-k> <c-w>k
-map <c-h> <c-w>h
-map <c-l> <c-w>l
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+nnoremap <c-h> <c-w>h
+nnoremap <c-l> <c-w>l
 
-" closeBuffer
+" Set window title
+nnoremap <F2> :set titlestring=
+nnoremap <C-S-F2> :set titlestring=
+
+" close buffer
 nnoremap <F4> :bp<CR>:bd#<CR>
 
-" change cwd to current file
+" change pwd to current file
 nnoremap cdc :cd %:p:h<CR>:pwd<CR>
 
-" Not searchNext. Do only highlight word under cursor.
-nmap * *N
+" Execute previous one now
+:cd %:p:h
 
-" save with ctrl-s (useless if term emu catches keymapping)
-nnoremap <C-s> :up<CR>
+" Not searchNext. Do only highlight word under cursor.
+"nmap * *N
+nnoremap * viw"9yb/9<CR>
+
+" save with ctrl-s
+nmap <C-s> :up<CR>
 
 
 " NERDTree --------------------------------------------------------------------
@@ -167,50 +179,58 @@ nnoremap <C-s> :up<CR>
 
 " YouCompleteMe ---------------------------------------------------------------
 
-command YcmEnable call YcmEnable()
-function YcmEnable()
-	unlet b:ycm_largefile
-endfunction
-command YcmDisable call YcmDisable()
-function YcmDisable()
-	let b:ycm_largefile = 1
-endfunction
+"command YcmEnable call YcmEnable()
+"function YcmEnable()
+"       unlet b:ycm_largefile
+"endfunction
+"command YcmDisable call YcmDisable()
+"function YcmDisable()
+"       let b:ycm_largefile = 1
+"endfunction
 
 
 " OS integration --------------------------------------------------------------
 
 if has("win32")
 
-	" insert current TS
-	inoremap <F5> a<C-R>=strftime('%Y%m%d%H%M%S')<CR><Esc>
-	inoremap <S-F5> a<C-R>=strftime('%d.%m.%Y %H:%M:%S%z')<CR><Esc>
-	inoremap <C-F5> a<C-R>=strftime('%Ec')<CR><Esc>
+    " insert current TS
+    inoremap <F5> <C-R>=strftime('%Y%m%d%H%M%S')<CR>
+    "inoremap <S-F5> <C-R>=strftime('%Y-%m-%d_%H:%M:%S%z')<CR><Esc>
 
-	" Printer -----------------------------
-	set printfont=Courier:h10
-	set printoptions=header:2,left:15mm,right:10mm,bottom:15mm,number:y,paper:A4,portrait:y,syntax:y
+    " Printer -----------------------------
+    set printfont=Courier:h10
+    set printoptions=header:2,left:15mm,right:10mm,bottom:15mm,number:y,paper:A4,portrait:y,syntax:y
+
+    command  OsTerminal  !start cmd.exe
+    command  OsFileExplorer  !start explorer.exe .
 
 else
 
-	" Insert hash
-	inoremap <F5> <C-R>=system("date\|md5sum\|awk '{printf \"%s\",$1}'")<CR>
-	" insert current TS
-	inoremap <S-F5> <C-R>=strftime('%Y-%m-%d_%H:%M:%S%z')<CR><Esc>
-	inoremap <C-F5> a<C-R>=strftime('%Ec')<CR><Esc>
 
-	command  OsTerminal  !x-terminal-emulator &
-	command  OsFileExplorer  !x-file-manager `pwd` &
-	command  OsFirefox  !firefox `pwd` &
-	command  OsChromium  !chromium `pwd` &
+    " Insert hash
+    inoremap <F5> <C-R>=system("date\|md5sum\|awk '{printf \"%s\",$1}'")<CR>
+    " insert current TS
+    inoremap <S-F5> <C-R>=strftime('%Y-%m-%d_%H:%M:%S%z')<CR><Esc>
+    "inoremap <C-F5> <C-R>=strftime('%Ec')<CR><Esc>
+
+    command  OsTerminal  !x-terminal-emulator &
+    command  OsFileExplorer  !x-file-manager `pwd` &
+    command  OsFirefox  !firefox `pwd` &
+    command  OsChromium  !chromium `pwd` &
 
 endif
 
 
 " filetype specific -----------------------------------------------------------
 
-autocmd FileType html setl shiftwidth=2 tabstop=2
-autocmd FileType xml  setl shiftwidth=2 tabstop=2
+autocmd FileType html setl sw=2 ts=2
+autocmd FileType xml  setl sw=2 ts=2
 autocmd BufNewFile,BufRead Makefile setl noexpandtab setl list
 
-autocmd BufNewFile,BufRead 	*.ts  setlocal ft=javascript
+autocmd FileType text setl ft=awk
+autocmd BufNew,BufRead *.gnuplot setl ft=gnuplot
+autocmd BufNew,BufRead *.yaml,*.yml setl ts=2 sw=2
+autocmd BufNew,BufRead *.json, setl ts=2 sw=2
+autocmd BufNewFile,BufRead *.ts  setl ft=javascript
+autocmd BufNewFile,BufRead *.pom setl ft=xml
 
