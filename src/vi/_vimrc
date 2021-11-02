@@ -210,7 +210,7 @@ endif
 
 autocmd FileType html setl shiftwidth=2 tabstop=2
 autocmd FileType xml  setl shiftwidth=2 tabstop=2
-autocmd FileType Makefile setl noexpandtab
+autocmd BufNewFile,BufRead Makefile setl noexpandtab setl list
 
 autocmd BufNewFile,BufRead 	*.ts  setlocal ft=javascript
 
