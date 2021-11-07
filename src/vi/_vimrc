@@ -225,7 +225,7 @@ endif
 
 autocmd FileType html setl sw=2 ts=2
 autocmd FileType xml  setl sw=2 ts=2
-autocmd BufNewFile,BufRead Makefile setl noexpandtab setl list
+autocmd BufNewFile,BufRead Makefile setl noexpandtab list
 
 autocmd FileType text setl ft=awk
 autocmd BufNew,BufRead *.gnuplot setl ft=gnuplot
