@@ -1,3 +1,5 @@
+" Author: hiddenalpha.ch
+" Source: "https://git.hiddenalpha.ch/my-config.git/tree/src/vi/_vimrc"
 
 if has("win32")
 
@@ -32,6 +34,7 @@ if has("win32")
     endfunction
 
     function Formatxml()
+        " @author hiddenalpha.ch
         if !empty( glob($USERPROFILE."/bin/xmllint.exe") )
             echo "xmllint --format"
             silent %!set xmllint_indent="  " & \%userprofile\%/bin/xmllint --format -
@@ -53,6 +56,7 @@ if has("win32")
 else " NOT win32
 
     function Formatxml()
+        " @author hiddenalpha.ch
         if !empty( glob("/usr/bin/xmllint") )
             echo "xmllint --format"
             silent %!XMLLINT_INDENT="  " /usr/bin/xmllint --format -
@@ -81,7 +85,6 @@ set encoding=utf-8
 set linebreak
 set nobackup
 set nowritebackup
-set expandtab
 set noswapfile
 set formatoptions=roq
 set number
@@ -89,32 +92,25 @@ set hidden " <- Allow to switch buffer even it is not saved.
 set ruler
 set hlsearch
 set scrolloff=1 " <- Keep free lines top/bottom before/after cursor
-set tabstop=4
-set shiftwidth=4
 set showcmd
 set textwidth=0
 set listchars=eol:$,tab:>-
+set showbreak=↳\ 
 "set wildmenu
 "set laststatus=2  " 2: Always display filename
 "set statusline+=%F " '- With full path
 set spelllang=en,de
-set showbreak=↳\ 
 set sidescroll=8
 syntax on
-
-" Printer -----------------------------
-"set printfont=Courier:h10
-"set printoptions=header:2,left:10mm,right:8mm,bottom:10mm,number:y,paper:A4,portrait:y,syntax:y
-
-let mapleader = ','
 
 
 " indent ----------------------------------------------------------------------
 
+set expandtab
+set tabstop=4
+set shiftwidth=4
 set autoindent
 set nosmartindent
-set shiftwidth=4
-set tabstop=4
 vnoremap > >gv
 vnoremap <Tab> >gv
 vnoremap < <gv
@@ -143,7 +139,7 @@ command -nargs=? -range=% Tab2Space call IndentConvert(<line1>,<line2>,1,<q-args
 
 " misc ------------------------------------------------------------------------
 
-" buffer window
+" Quickly switch windows
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
 nnoremap <c-h> <c-w>h
@@ -171,22 +167,11 @@ nmap <C-s> :up<CR>
 
 
 " NERDTree --------------------------------------------------------------------
+" Setup instructions see: "https://hiddenalpha.ch/slnk/id/1:6185e48"
 
 "set rtp+=/opt/nerdtree
 "source /opt/nerdtree/plugin/NERD_tree.vim
 "nnoremap ° :NERDTreeToggle<CR>
-
-
-" YouCompleteMe ---------------------------------------------------------------
-
-"command YcmEnable call YcmEnable()
-"function YcmEnable()
-"       unlet b:ycm_largefile
-"endfunction
-"command YcmDisable call YcmDisable()
-"function YcmDisable()
-"       let b:ycm_largefile = 1
-"endfunction
 
 
 " OS integration --------------------------------------------------------------
@@ -197,21 +182,16 @@ if has("win32")
     inoremap <F5> <C-R>=strftime('%Y%m%d%H%M%S')<CR>
     "inoremap <S-F5> <C-R>=strftime('%Y-%m-%d_%H:%M:%S%z')<CR><Esc>
 
-    " Printer -----------------------------
-    set printfont=Courier:h10
-    set printoptions=header:2,left:15mm,right:10mm,bottom:15mm,number:y,paper:A4,portrait:y,syntax:y
-
     command  OsTerminal  !start cmd.exe
     command  OsFileExplorer  !start explorer.exe .
 
 else
 
-
-    " Insert hash
-    inoremap <F5> <C-R>=system("date\|md5sum\|awk '{printf \"%s\",$1}'")<CR>
+    " Insert a hash
+    inoremap <F5> <C-R>=system("head -c32 /dev/urandom\|md5sum\|awk '{printf \"%s\",$1}'")<CR>
+    "Obsolete: inoremap <F5> <C-R>=system("date\|md5sum\|awk '{printf \"%s\",$1}'")<CR>
     " insert current TS
-    inoremap <S-F5> <C-R>=strftime('%Y-%m-%d_%H:%M:%S%z')<CR><Esc>
-    "inoremap <C-F5> <C-R>=strftime('%Ec')<CR><Esc>
+    inoremap <S-F5> <C-R>=strftime('%Y-%m-%d_%H:%M:%S%z')<CR>
 
     command  OsTerminal  !x-terminal-emulator &
     command  OsFileExplorer  !x-file-manager `pwd` &

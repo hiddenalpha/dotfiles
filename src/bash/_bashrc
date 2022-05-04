@@ -1,14 +1,12 @@
 
-#if [ -d "$HOME/.bin" ] ; then
-#    PATH="$HOME/.bin:$PATH"
-#fi
+if test -d ~/.bin ; then
+    PATH=~/.bin:$PATH
+fi
 
 # Add global node modules to path
 #PATH=/opt/node-6.10.1/lib/node_modules/.bin:$PATH
 
-#numlockx on
-
-# load bash completion for npm (nodePackageManager)
+# bash completion for npm (nodePackageManager)
 #source /opt/node-6.10.1/etc/npm-completion.sh
 
 # Load user scoped settings.
