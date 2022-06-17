@@ -1,3 +1,4 @@
+" Source: https://git.hiddenalpha.ch/my-config.git/tree/src/vi/_vimrc
 
 set lines=35 columns=100
 

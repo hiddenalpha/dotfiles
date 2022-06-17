@@ -1,0 +1,4 @@
+# Source:  https://git.hiddenalpha.ch/my-config.git/tree/src/gdb/_gdbinit
+set history save on
+set print thread-events off
+set print inferior-events off
