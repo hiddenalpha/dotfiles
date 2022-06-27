@@ -1,4 +1,6 @@
 
+WINDOOF=$(if test -d /c/Windows; then echo true; else echo false; fi)
+
 if test -d ~/.bin ; then
     PATH=~/.bin:$PATH
 fi
@@ -10,6 +12,24 @@ fi
 #source /opt/node-6.10.1/etc/npm-completion.sh
 
 # Load user scoped settings.
-source ~/.config/user/setup-env
-source ~/.config/user/setup-shell
+#source ~/.config/user/setup-env
+#source ~/.config/user/setup-shell
+
+
+if $WINDOOF; then
+
+    # ssh-agent (See: https://docs.github.com/en/github/authenticating-to-github/working-with-ssh-key-passphrases#auto-launching-ssh-agent-on-git-for-windows)
+    env=~/.ssh/agent.env
+    agent_load_env () { test -f "$env" && . "$env" >| /dev/null ; }
+    agent_start () {
+        (umask 077; ssh-agent >| "$env")
+        . "$env" >| /dev/null ; }
+    agent_load_env
+    agent_run_state=$(ssh-add -l >| /dev/null 2>&1; echo $?)
+    if [ ! "$SSH_AUTH_SOCK" ] || [ $agent_run_state = 2 ]; then
+        agent_start
+    fi
+    unset env
+
+fi
 
