@@ -27,6 +27,8 @@
             <value name="TabModifiedSuffix" type="string" data="[*]"/>
             <!-- How a tab label looks like -->
             <value name="TabConsole" type="string" data="%s"/>
+            <!-- TabRecent: 00=cycleInOrder 01=cycleMostRecent -->
+            <value name="TabRecent" type="hex" data="00"/>
             <value name="Tabs" type="hex" data="01"/>
             <value name="TabsLocation" type="hex" data="01"/>
             <value name="TrueColorerSupport" type="hex" data="01"/>
