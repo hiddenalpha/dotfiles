@@ -1,0 +1,57 @@
+
+JAR ?= jar
+MVN ?= mvn.bat
+TAR ?= C:/Users/fankhauseand/.opt/gitPortable-2.27.0-x64/usr/bin/tar.exe
+FIND ?= C:/Users/fankhauseand/.bin/find.exe
+INSTALL_DIR ?= C:/work/tmp/zarquon-cli
+
+ZARQUON_AR=zarquon-process.jar
+DEPS_AR=zarquon-process-deps.zip
+
+
+default: dist
+
+.PHONY: clean
+clean:
+	$(MVN) clean
+
+deps: pom.xml zarquon-process/pom.xml zarquon-domain/pom.xml
+	@echo -e "\n[INFO ] Pack dependencies"
+	$(MVN) dependency:copy-dependencies -pl zarquon-process
+
+.PHONY: bin
+bin:
+	mkdir -p zarquon-process/target/bin
+	@echo -e "\
+		cd "\`dirname "\$${BASH_SOURCE[0]}"\`" \n\
+		java -cp '../lib/*' ch.post.it.paisa.zarquon.process.timemachine.NTPServer \n\
+		" > zarquon-process/target/bin/zarquon-NTPServer.sh
+
+.PHONY: compile
+compile:
+	$(MVN) compile
+
+.PHONY: zarquon
+zarquon: compile
+	@echo -e "\n[INFO ] Pack zarquon itself (hint make sure you compile beforehand)"
+	$(JAR) cvf zarquon-process/target/$(ZARQUON_AR) -C zarquon-process/target/classes/ ch \
+
+.PHONY: dist
+dist: zarquon deps bin
+	$(TAR) --owner=0 --group=0 -czf zarquon-process/target/zarquon-cli.tgz \
+		zarquon-process/target/bin \
+		zarquon-process/target/$(ZARQUON_AR) \
+		zarquon-process/target/dependency/* \
+		--xform 's;^zarquon-process/target/bin;bin;' \
+		--xform 's;^zarquon-process/target/dependency;lib;' \
+		--xform 's;^zarquon-process/target;lib;' \
+
+.PHONY: install
+install: zarquon deps
+	@echo -e "\n[INFO ] Install to '$(INSTALL_DIR)'"
+	mkdir -p $(INSTALL_DIR)/jars
+	(cd $(INSTALL_DIR)/jars && jar xf $(PWD)/zarquon-process/target/$(DEPS_AR))
+	cp zarquon-process/target/$(ZARQUON_AR) $(INSTALL_DIR/jars)
+	echo -e "\n[INFO ] Run with:  java -cp '$(INSTALL_DIR)/jars/*' ch.post.it.paisa.zarquon.process.timemachine.NTPServer"
+
+
