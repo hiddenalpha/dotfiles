@@ -31,5 +31,10 @@ if $WINDOOF; then
     fi
     unset env
 
+    # Fix vim-behind-ssh on windoof
+    # TODO this fixes the remote shell, but breaks the local one (Eg del prints
+    #      tilde). Grr ....
+    #if test -n "$ConEmuBuild"; then TERM=dumb; export TERM; fi
+
 fi
 
