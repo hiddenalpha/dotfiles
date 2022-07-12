@@ -93,6 +93,8 @@
             <value name="CompressLongStrings" type="hex" data="01"/>
 
             <value name="EnvironmentSet" type="multi">
+                <!-- Kludge to fix nightmare systems. Namely to make ssh-agent work on WINDOOF -->
+                <line data="set PATH=/c/Users/%USERNAME%/.opt/git/cmd;/c/Users/%USERNAME%/.opt/git/usr/bin;%PATH%"/>
                 <!-- Prepend my custom binaries -->
                 <line data="set PATH=/c/Users/%USERNAME%/.bin;%PATH%"/>
                 <!-- BusyBox setting not sure what it is for -->
