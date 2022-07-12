@@ -1,22 +1,23 @@
 #
 # Debian with C++ compiler.
 #
-# CNTNRNAME=debian-cxx
-# sudo docker build . -f THIS_FILE
-# IMG=
-# sudo docker container create --name $CNTNRNAME -v "$PWD:/work" $IMG
-# sudo docker start $CNTNRNAME
-# sudo docker exec -ti $CNTNRNAME bash
+# Usage:
 #
+#   IMG=debian-cxx:latest
+#   CNTNR=debian-cxx
+#   curl -sSL "https://git.hiddenalpha.ch/dotfiles.git/plain/src/dockerfiles/debian-cxx.Dockerfile" | sudo docker build . -f - -t "${IMG:?}"
+#   sudo docker container create --name "${CNTNR:?}" -v "${PWD:?}:/work" "${IMG:?}"
+#   sudo docker start "${CNTNR:?}"
+#   sudo docker exec -ti "${CNTNR:?}" bash
+#
+
 FROM debian:buster-20220622-slim
 
 RUN true \
-    && PGKINIT="apt update" \
-    && PKGCLEAN="apt clean" \
-    && PKGADD="apt install -y --no-install-recommends" \
-    && $PGKINIT \
-    && $PKGADD bash g++ make vim tar \
-    && $PKGCLEAN \
+    && apt update \
+    && apt install -y --no-install-recommends \
+         g++ make \
+    && apt clean \
     && true
 
 USER 1000:1000
