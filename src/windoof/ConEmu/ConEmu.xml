@@ -5,13 +5,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <key name="Software">
     <key name="ConEmu">
-        <key name=".Vanilla" modified="2022-06-27 00:42:42" build="210912">
+        <key name=".Vanilla" modified="2022-07-12 12:22:45" build="210912">
             <!-- <value name="UseCurrentSizePos" type="hex" data="01"/> -->
             <!-- <value name="AutoSaveSizePos" type="hex" data="01"/> -->
             <!-- <value name="WindowMode" type="dword" data="0000051f"/> -->
 
             <!-- Copy LF=00, CRLF=01 -->
             <value name="ClipboardEOL" type="hex" data="00"/>
+            <!-- AnsiExecution 00=everywhere, 01=cmdOnly, ... -->
+            <value name="AnsiExecution" type="hex" data="00"/>
             <value name="AutoTrimSingleLine" type="hex" data="01"/>
             <value name="ClipboardConfirmEnter" type="hex" data="01"/>
             <value name="ClipboardConfirmLonger" type="ulong" data="1024"/>
