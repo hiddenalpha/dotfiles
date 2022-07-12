@@ -91,7 +91,7 @@
 
             <value name="EnvironmentSet" type="multi">
                 <!-- Prepend my custom binaries -->
-                <line data="set PATH=C:\Users\%USERNAME%\.bin;C:\Users\%USERNAME%\.opt\git\cmd;C:\Users\%USERNAME%\.opt\mingw64\bin;C:\Users\%USERNAME%\.opt\git\usr\bin;%PATH%"/>
+                <line data="set PATH=/c/Users/%USERNAME%/.bin;%PATH%"/>
                 <!-- BusyBox setting not sure what it is for -->
                 <line data="BB_SKIP_ANSI_EMULATION=1"/>
             </value>
