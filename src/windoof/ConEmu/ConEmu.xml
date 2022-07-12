@@ -1,4 +1,7 @@
+<!-- -->
+<!-- Source "https://git.hiddenalpha.ch/dotfiles.git/tree/src/windoof/ConEmu/ConEmu.xml" -->
 <!-- Copy this file to "C:\Users\%USERNAME%\AppData\Roaming\ConEmu.xml" -->
+<!-- -->
 <?xml version="1.0" encoding="utf-8"?>
 <key name="Software">
     <key name="ConEmu">
