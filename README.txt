@@ -5,8 +5,12 @@ Personal Settings
 My dotfiles.
 
 
+Shell pipes error handling:
 
-Windoof drivers get installed to
+  https://www.shellscript.sh/tips/pipestatus/
+
+
+Windoof drivers installation location:
 
   C:\Windows\System32\DriverStore\FileRepository
 
