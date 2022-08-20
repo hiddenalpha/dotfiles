@@ -1,4 +1,8 @@
-
+#
+#  IMG=alpine-jre8:latest
+#  sudo docker build . -f - -t "${IMG:?}"
+#  sudo docker run --rm -ti "${IMG:?}" sh
+#
 ARG PARENT_IMAGE=alpine:3.16.0
 FROM $PARENT_IMAGE
 

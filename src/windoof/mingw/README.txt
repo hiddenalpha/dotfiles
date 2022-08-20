@@ -7,7 +7,7 @@ Packages (alpine):
   mingw-w64-gcc
 
 
-make:
+make (eg via MAKE_OPTS):
 
   CC=x86_64-w64-mingw32-gcc
   AR=x86_64-w64-mingw32-ar
@@ -25,15 +25,18 @@ make:
 
 DeflateAndInflate:
 
-  TODO
+  MAKE_OPTS="CC=x86_64-w64-mingw32-gcc BINEXT=.exe"
+  PKGS_TO_ADD="curl git make tar zlib-dev mingw-w64-gcc"
+  PKGS_TO_DEL="curl git make tar zlib-dev mingw-w64-gcc"
+  add_zlib_snip
 
 
 zlib:
 
     && echo "\n  Build zlib\n" \
+    && VERSION="1.2.11" \
     && THEOLDPWD="$PWD" \
     && cd /tmp \
-    && VERSION="1.2.11" \
     && curl -LsS -o "/tmp/zlib-${VERSION}.tgz" "https://github.com/madler/zlib/archive/refs/tags/v${VERSION:?}.tar.gz" \
     && tar xzf "/tmp/zlib-${VERSION:?}.tgz" \
     && export SRCDIR="/tmp/zlib-${VERSION:?}" \
@@ -54,4 +57,5 @@ zlib:
     && tar -C /usr/x86_64-w64-mingw32 -f /tmp/zlib-1.2.11-windoof.tgz -x include lib \
     && echo -e "\n  zlib Done :)\n" \
     && cd "${THEOLDPWD:?}" \
+    && unset THEOLDPWD VERSION \
 
