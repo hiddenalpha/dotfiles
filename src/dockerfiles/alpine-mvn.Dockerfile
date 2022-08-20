@@ -6,7 +6,6 @@
 ARG PARENT_IMAGE=alpine:3.16.0
 FROM $PARENT_IMAGE
 
-# openjdk8-jre
 ARG PKGS_TO_ADD="maven"
 ARG PKGS_TO_DEL=""
 ARG PKGINIT="true"
@@ -28,22 +27,6 @@ RUN true \
     && true
 
 USER 1000:1000
-
-RUN true \
-    # Make maven download generic stuff to not download it over and over.
-    && echo "<project>" > pom.xml \
-    && echo "  <modelVersion>4.0.0</modelVersion>" >> pom.xml \
-    && echo "  <groupId>com.example</groupId>" >> pom.xml \
-    && echo "  <artifactId>example</artifactId>" >> pom.xml \
-    && echo "  <version>0.0.0-SNAPSHOT</version>" >> pom.xml \
-    && echo "  <properties>" >> pom.xml \
-    && echo "    <maven.compiler.source>1.8</maven.compiler.source>" >> pom.xml \
-    && echo "    <maven.compiler.target>1.8</maven.compiler.target>" >> pom.xml \
-    && echo "  </properties>" >> pom.xml \
-    && echo "</project>" >> pom.xml \
-    && mvn clean verify \
-    && rm -rf * \
-    && true
 
 CMD ["sleep", "36000"]
 
