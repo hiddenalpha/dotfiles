@@ -6,6 +6,7 @@
 ARG PARENT_IMAGE=alpine:3.16.0
 FROM $PARENT_IMAGE
 
+ARG CN=example.com
 ARG PKGS_TO_ADD="nginx openssl"
 ARG PKGS_TO_DEL="openssl"
 ARG PKGINIT="true"
@@ -22,7 +23,7 @@ RUN true \
     && openssl genrsa -out /etc/ssl/private/nginx.key 2048 \
     && openssl req -new -key /etc/ssl/private/nginx.key \
          -out /etc/ssl/private/nginx.csr \
-         -subj "/C=/ST=/L=/O=/OU=/CN=" \
+         -subj "/C=/ST=/L=/O=/OU=/CN=${CN:?}" \
     && openssl x509 -req -days 365 -in /etc/ssl/private/nginx.csr \
          -signkey /etc/ssl/private/nginx.key -out /etc/ssl/certs/nginx.crt \
     && chgrp nginx /etc/ssl/private/nginx.key \
