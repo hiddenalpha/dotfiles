@@ -1,8 +1,6 @@
 
-###############################################################################
-# Disable v4 filtering completely
-#
-###############################################################################
+# Effectifely disable firewall
+# HINT: Probably breaks docker networking. Restart dockerd to fix.
 
 *filter
 
