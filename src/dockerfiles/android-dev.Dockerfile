@@ -12,13 +12,12 @@
 ARG PARENT_IMAGE=debian:buster-20220622-slim
 FROM $PARENT_IMAGE
 
-# TODO maybe needed?
-ARG PKGS_TO_ADD="curl unzip openjdk-11-jdk-headless aapt apksigner"
+ARG PKGS_TO_ADD="curl unzip openjdk-11-jdk-headless aapt apksigner zipalign"
 ARG PKGS_TO_DEL="curl unzip"
-ARG PKGINIT="apt update"
-ARG PKGADD="apt install -y --no-install-recommends"
-ARG PKGDEL="apt purge -y"
-ARG PKGCLEAN="apt clean"
+ARG PKGINIT="apt-get update"
+ARG PKGADD="apt-get install -y --no-install-recommends"
+ARG PKGDEL="apt-get purge -y"
+ARG PKGCLEAN="apt-get clean"
 ARG PLATFORM_VERSION="22"
 ARG BUILD_TOOLS_VERSION="22.0.1"
 ARG CMDLINETOOLS_URL="https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip"
@@ -38,8 +37,8 @@ RUN true \
     && mkdir /usr/lib/android-sdk/cmdline-tools/latest \
     && mv /tmp/cmdline-tools/* /usr/lib/android-sdk/cmdline-tools/latest/. \
     && yes | sdkmanager --install "platforms;android-$PLATFORM_VERSION" "build-tools;$BUILD_TOOLS_VERSION" \
-    # This aapt for some reason is broken (wrong linker) so use the debian one.
-    && rm "/usr/lib/android-sdk/build-tools/${BUILD_TOOLS_VERSION:?}/aapt" \
+    # Those for some reason are broken (wrong linker) so use the debian variant.
+    && (cd "/usr/lib/android-sdk/build-tools/${BUILD_TOOLS_VERSION:?}" && rm aapt zipalign) \
     && chown 1000:1000 /work \
     && $PKGDEL $PKGS_TO_DEL \
     && $PKGCLEAN \
