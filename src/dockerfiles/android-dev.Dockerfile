@@ -1,0 +1,52 @@
+#
+# Tools for Android development
+#
+#   IMG=android-dev:latest
+#   CNTNR=android-dev
+#   curl -sSL "https://git.hiddenalpha.ch/dotfiles.git/plain/src/dockerfiles/android-dev.Dockerfile" | sudo docker build . -f - -t "${IMG:?}"
+#   sudo docker container create --name "${CNTNR:?}" -v "${PWD:?}:/work" "${IMG:?}"
+#   sudo docker start "${CNTNR:?}"
+#   sudo docker exec -ti "${CNTNR:?}" bash
+#
+
+ARG PARENT_IMAGE=debian:buster-20220622-slim
+FROM $PARENT_IMAGE
+
+# TODO maybe needed?
+ARG PKGS_TO_ADD="curl unzip openjdk-11-jdk-headless aapt apksigner"
+ARG PKGS_TO_DEL="curl unzip"
+ARG PKGINIT="apt update"
+ARG PKGADD="apt install -y --no-install-recommends"
+ARG PKGDEL="apt purge -y"
+ARG PKGCLEAN="apt clean"
+ARG PLATFORM_VERSION="22"
+ARG BUILD_TOOLS_VERSION="22.0.1"
+ARG CMDLINETOOLS_URL="https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip"
+
+ENV ANDROID_HOME="/usr/lib/android-sdk"
+ENV PATH="$PATH:/usr/lib/android-sdk/build-tools/debian:/usr/lib/android-sdk/cmdline-tools/latest/bin:/usr/lib/android-sdk/build-tools/$BUILD_TOOLS_VERSION"
+
+WORKDIR /work
+
+RUN true \
+    && $PKGINIT \
+    && $PKGADD $PKGS_TO_ADD \
+    && (cd /tmp && curl -sSLO "$CMDLINETOOLS_URL") \
+    && if test -x /tmp/cmdline-tools; then echo >&2 "[ERROR] /tmp/cmdline-tools already exists"; false; fi \
+    && (cd /tmp && unzip $(basename "$CMDLINETOOLS_URL") >/dev/null) \
+    && mkdir /usr/lib/android-sdk/cmdline-tools \
+    && mkdir /usr/lib/android-sdk/cmdline-tools/latest \
+    && mv /tmp/cmdline-tools/* /usr/lib/android-sdk/cmdline-tools/latest/. \
+    && yes | sdkmanager --install "platforms;android-$PLATFORM_VERSION" "build-tools;$BUILD_TOOLS_VERSION" \
+    # This aapt for some reason is broken (wrong linker) so use the debian one.
+    && rm "/usr/lib/android-sdk/build-tools/${BUILD_TOOLS_VERSION:?}/aapt" \
+    && chown 1000:1000 /work \
+    && $PKGDEL $PKGS_TO_DEL \
+    && $PKGCLEAN \
+    && rm -rf /tmp/* \
+    && true
+
+USER 1000:1000
+
+CMD ["sleep", "36000"]
+
