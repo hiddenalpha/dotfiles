@@ -11,7 +11,8 @@
 #   sudo docker exec -ti "${CNTNR:?}" bash
 #
 
-FROM debian:buster-20220622-slim
+ARG PARENT_IMAGE=debian:buster-20220622-slim
+FROM $PARENT_IMAGE
 
 ENV \
     JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
