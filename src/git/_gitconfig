@@ -37,6 +37,7 @@
     la = log --graph --decorate --date-order --all
     mb = merge-base
     s = status
+    rimraf = ! git clean -df && git reset --hard HEAD
 
 [color]
     ui = always
