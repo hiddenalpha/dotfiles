@@ -1,8 +1,10 @@
 
-Personal Settings
-=================
+My Dotfiles
+================
 
-My dotfiles.
+See also
+https://git.hiddenalpha.ch/UnspecifiedGarbage.git/tree
+for more handy nonsense.
 
 
 Shell pipes error handling:
