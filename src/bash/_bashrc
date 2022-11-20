@@ -5,6 +5,8 @@ if test -d ~/.bin ; then
     PATH=~/.bin:$PATH
 fi
 
+alias docker='sudo docker'
+
 # Add global node modules to path
 #PATH=/opt/node-6.10.1/lib/node_modules/.bin:$PATH
 
