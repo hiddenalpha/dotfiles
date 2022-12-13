@@ -1,7 +1,7 @@
 
-WINDOOF=$(if test -d /c/Windows; then echo true; else echo false; fi)
+WINDOOF=$(if [ -d /c/Windows ]; then echo true; else echo false; fi)
 
-if test -d ~/.bin ; then
+if [ -d ~/.bin ]; then
     PATH=~/.bin:$PATH
 fi
 
@@ -33,7 +33,7 @@ if $WINDOOF; then
     # Fix vim-behind-ssh on windoof
     # TODO this fixes the remote shell, but breaks the local one (Eg del prints
     #      tilde). Grr ....
-    #if test -n "$ConEmuBuild"; then TERM=dumb; export TERM; fi
+    #if [ -n "$ConEmuBuild" ]; then TERM=dumb; export TERM; fi
 
 fi
 

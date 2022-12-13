@@ -19,18 +19,20 @@ function mod.printHelp()
 end
 
 
-function mod.parseArgs( this )
+function mod.parseArgs( app )
     local positionalArgNr = 0
-    for iA=1, #_ENV.arg do
+    local iA = 0
+    while true do iA = iA +1
         local arg = _ENV.arg[iA]
-        if false then
+        if not arg then
+            break
         elseif arg == "--help" then
             mod.printHelp() return -1
         elseif not arg:find("^%-%-") then
             positionalArgNr = positionalArgNr + 1
             if false then
             --elseif positionalArgNr == 1 then
-            --    this.whatever = arg
+            --    app.whatever = arg
             else
                 log:write("Unexpected arg: ".. arg .."\n")return -1
             end
@@ -38,22 +40,22 @@ function mod.parseArgs( this )
             log:write("Unexpected arg: ".. arg .."\n")return -1
         end
     end
-    if not this.whatever then log:write("TODO write errmsg here\n")return -1 end
+    if not app.whatever then log:write("TODO write errmsg here\n")return -1 end
     return 0
 end
 
 
-function mod.run( this )
+function mod.run( app )
     log:write("[INFO ] TODO impl what the prog should do\n")
 end
 
 
 function mod.main()
-    local this = objectSeal{
+    local app = objectSeal{
         whatever = false,
     }
-    if mod.parseArgs(this) ~= 0 then os.exit(1) end
-    mod.run(this)
+    if mod.parseArgs(app) ~= 0 then os.exit(1) end
+    mod.run(app)
 end
 
 
