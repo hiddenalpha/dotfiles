@@ -37,6 +37,7 @@ s = status
 co = checkout
 br = branch
 bra = !git br && git br -r
+delmerged = !git br -d $(find .git/refs/heads -type f|cut -c17-)
 
 [color]
 ui = always
