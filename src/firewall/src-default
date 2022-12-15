@@ -138,6 +138,10 @@
 #-A OUTPUT -o vboxnet0 -j ACCEPT
 #-A INPUT  -i vboxnet0 -j ACCEPT
 
+# Allow all docker servers
+#-A OUTPUT -o docker0 -m state --state NEW,RELATED -j ACCEPT
+#-A INPUT  -i docker0 -m state --state ESTABLISHED,RELATED -j ACCEPT
+
 # Some client ports for debugging.
 #-A OUTPUT -p tcp -m tcp --match multiport --dports 10000:10010 -j ACCEPT
 #-A INPUT  -p tcp -m state --state ESTABLISHED,RELATED --match multiport --sports 10000:10010 -j ACCEPT

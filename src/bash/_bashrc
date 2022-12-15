@@ -1,9 +1,11 @@
 
-WINDOOF=$(if test -d /c/Windows; then echo true; else echo false; fi)
+WINDOOF=$(if [ -d /c/Windows ]; then echo true; else echo false; fi)
 
-if test -d ~/.bin ; then
+if [ -d ~/.bin ]; then
     PATH=~/.bin:$PATH
 fi
+
+alias docker='sudo docker'
 
 # Add global node modules to path
 #PATH=/opt/node-6.10.1/lib/node_modules/.bin:$PATH
@@ -11,9 +13,8 @@ fi
 # bash completion for npm (nodePackageManager)
 #source /opt/node-6.10.1/etc/npm-completion.sh
 
-# Load user scoped settings.
-#source ~/.config/user/setup-env
-#source ~/.config/user/setup-shell
+# Load (aka source) user scoped settings.
+#. ~/.config/user/setup-env
 
 
 if $WINDOOF; then
@@ -21,9 +22,7 @@ if $WINDOOF; then
     # ssh-agent (See: https://docs.github.com/en/github/authenticating-to-github/working-with-ssh-key-passphrases#auto-launching-ssh-agent-on-git-for-windows)
     env=~/.ssh/agent.env
     agent_load_env () { test -f "$env" && . "$env" >| /dev/null ; }
-    agent_start () {
-        (umask 077; ssh-agent >| "$env")
-        . "$env" >| /dev/null ; }
+    agent_start () { (umask 077; ssh-agent >| "$env"); . "$env" >| /dev/null ; }
     agent_load_env
     agent_run_state=$(ssh-add -l >| /dev/null 2>&1; echo $?)
     if [ ! "$SSH_AUTH_SOCK" ] || [ $agent_run_state = 2 ]; then
@@ -34,7 +33,7 @@ if $WINDOOF; then
     # Fix vim-behind-ssh on windoof
     # TODO this fixes the remote shell, but breaks the local one (Eg del prints
     #      tilde). Grr ....
-    #if test -n "$ConEmuBuild"; then TERM=dumb; export TERM; fi
+    #if [ -n "$ConEmuBuild" ]; then TERM=dumb; export TERM; fi
 
 fi
 

@@ -1,0 +1,34 @@
+
+# I suspect the lxpanel to destroy the intel driver in some way. So kill it
+# before we begin.
+pkill lxpanel
+
+# Secondary monitor (Fujitsu)
+# Using lower resolution so scale matches the other screen better
+# Native: 1920x1200
+# Scaled: 1440x900
+xrandr \
+    --output DP-1 \
+    --mode 1440x900 \
+    --rate 60.00 \
+    --rotate left
+
+sleep 0.1
+
+# Primary monitor (LG 4k)
+# "pos" is to have it right of the 2nd-dary monitor.
+xrandr \
+    --output HDMI-3 \
+    --mode 1920x1080 \
+    --rate 60.00 \
+    --pos 900x310
+
+sleep 0.1
+
+# Wallpaper
+feh --bg-tile "/home/andreas/.config/wallpaper/gfx/wallpaper-bricks-infinite.jpg"
+
+# Start (previously killed) panel again
+sleep 0.1
+lxpanel 2>/dev/null &
+

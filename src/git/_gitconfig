@@ -1,48 +1,49 @@
 
 [user]
-email = https://hiddenalpha.ch/slnk/id/1:c0n74ct
-name = user@host
+    email = 23085769+hiddenalpha@users.noreply.github.com
+    name = Andreas Fankhauser hiddenalpha.ch
 
 [merge]
-tool = meld
-ff = no
+    ff = no
+    tool = meld
 
 [pull]
-ff = yes
+    ff = yes
 
 [push]
-default = simple
+    default = simple
 
 [log]
-date = iso
+    date = iso
 
 [alias]
-detach = checkout --detach
-l  = log --graph --decorate --date-order
-la = log --graph --decorate --date-order --all
-l1 = log --graph --decorate --date-order -n1
-l2 = log --graph --decorate --date-order -n2
-l3 = log --graph --decorate --date-order -n3
-l4 = log --graph --decorate --date-order -n4
-l5 = log --graph --decorate --date-order -n5
-l6 = log --graph --decorate --date-order -n6
-l7 = log --graph --decorate --date-order -n7
-l8 = log --graph --decorate --date-order -n8
-l9 = log --graph --decorate --date-order -n9
-mb = merge-base
-d = diff
-dc = diff --cached
-dh = diff HEAD
-s = status
-co = checkout
-br = branch
-bra = !git br && git br -r
-delmerged = !git br -d $(find .git/refs/heads -type f|cut -c17-)
+    br = branch
+    bra = !git br && git br -r
+    co = checkout
+    d = diff
+    dc = diff --cached
+    dh = diff HEAD
+    detach = checkout --detach
+    l  = log --graph --decorate --date-order
+    l1 = log --graph --decorate --date-order -n1
+    l2 = log --graph --decorate --date-order -n2
+    l3 = log --graph --decorate --date-order -n3
+    l4 = log --graph --decorate --date-order -n4
+    l5 = log --graph --decorate --date-order -n5
+    l6 = log --graph --decorate --date-order -n6
+    l7 = log --graph --decorate --date-order -n7
+    l8 = log --graph --decorate --date-order -n8
+    l9 = log --graph --decorate --date-order -n9
+    la = log --graph --decorate --date-order --all
+    mb = merge-base
+    s = status
+    rimraf = ! git clean -df && git reset --hard HEAD
+    delmerged = !git br -d $(find .git/refs/heads -type f|cut -c17-)
 
 [color]
-ui = always
+    ui = always
 
 # Helpful to get mouse scrollable diff in some terminals
 #[core]
-#pager = less -R -+X
+#    pager = less -R -+X
 

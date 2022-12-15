@@ -1,0 +1,24 @@
+#
+# Put this file to: "~/.config/openbox/autostart"
+#
+
+# mouse acceleration
+#xset mouse 3/1 0
+
+#numlockx on
+
+# Screen lock daemon
+light-locker --lock-on-suspend --lock-after-screensaver=600 &
+
+# Restore last used desktop wallpaper
+# For example create file "~/.fehbg" and fill with:
+#   feh --bg-tile your/wallpaper.png
+# TODO any need to launch in background?
+if test -e ~/.fehbg; then ~/.fehbg; fi
+
+#lxpanel &
+#xscreensaver &
+
+# Launch a term as powerusers need one anyway.
+#x-terminal-emulator &
+
