@@ -87,14 +87,14 @@ set linebreak
 set nobackup
 set nowritebackup
 set noswapfile
-set formatoptions=roq
+set fo=jlnroq fo-=t
+set textwidth=72
 set number
 set hidden " <- Allow to switch buffer even it is not saved.
 set ruler
 set hlsearch
 set scrolloff=1 " <- Keep free lines top/bottom before/after cursor
 set showcmd
-set textwidth=0
 set listchars=eol:$,tab:>-
 set showbreak=↳\ 
 "set wildmenu
