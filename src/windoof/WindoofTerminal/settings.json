@@ -62,7 +62,7 @@
             },
             {
                 "name": "Bash 20221221",
-                "bellStyle": [ "audible", "taskbar" ],
+                "bellStyle": [ "taskbar" ],
                 "commandline": "C:\\Users\\fankhauseand\\.opt\\gitPortable-2.27.0-x64\\bin\\bash.exe",
                 "cursorShape": "filledBox",
                 "font": { "face": "DejaVu Sans Mono", "size": 14 },
