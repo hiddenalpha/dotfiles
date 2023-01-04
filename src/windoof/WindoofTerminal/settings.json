@@ -11,7 +11,7 @@
     "language": "en-US",
     "theme": "dark",
     "trimPaste": false,
-    "wordDelimiters": " /\\()\"'.,:;<>~!@#$%^&*|+=[]{}~?\u2502",
+    "wordDelimiters": " ()\"',:;<>~!@#$%^&*|+=[]{}~?\u2502",
     "actions": [
         { "command": "find", "keys": "ctrl+shift+f" },
         { "command": "openTabRenamer", "keys": "ctrl+shift+f2" },
