@@ -1,39 +1,59 @@
 
 WINDOOF=$(if [ -d /c/Windows ]; then echo true; else echo false; fi)
 
-if [ -d ~/.bin ]; then
-    PATH=~/.bin:$PATH
+# Do NOT store duplicates in history
+# Do NOT store in history if starts-with-space
+HISTCONTROL=ignoreboth
+
+if [ $SHLVL -eq 1 ]; then
+    set -o ignoreeof # Require explicit 'exit' cmd to exit shell.
+else
+    set +o ignoreeof
 fi
 
-alias docker='sudo docker'
+export PS1='\033[1;32m[\033[0m$? \033[1;30m\u\033[0m\033[1;32m@\033[1;30m\h \033[1;34m\w\033[1;32m]\033[0m\n\$ '
 
 # Add global node modules to path
 #PATH=/opt/node-6.10.1/lib/node_modules/.bin:$PATH
-
-# bash completion for npm (nodePackageManager)
+# bash completion for npm
 #source /opt/node-6.10.1/etc/npm-completion.sh
+
+# Custom bin
+if [ -d ~/.bin ]; then
+    export PATH=~/.bin:$PATH
+fi
+
+alias la='ls -A'
+#alias docker='sudo docker'
 
 # Load (aka source) user scoped settings.
 #. ~/.config/user/setup-env
 
-
+###############################################################################
+#
+# Auto-launching ssh-agent on Git for Windoofs
+#   (See: https://docs.github.com/en/github/authenticating-to-github/working-with-ssh-key-passphrases#auto-launching-ssh-agent-on-git-for-windows)
+#
 if $WINDOOF; then
-
-    # ssh-agent (See: https://docs.github.com/en/github/authenticating-to-github/working-with-ssh-key-passphrases#auto-launching-ssh-agent-on-git-for-windows)
     env=~/.ssh/agent.env
+
     agent_load_env () { test -f "$env" && . "$env" >| /dev/null ; }
     agent_start () { (umask 077; ssh-agent >| "$env"); . "$env" >| /dev/null ; }
+
     agent_load_env
+
+    # agent_run_state: 0=agent running w/ key; 1=agent w/o key; 2= agent not running
     agent_run_state=$(ssh-add -l >| /dev/null 2>&1; echo $?)
+
     if [ ! "$SSH_AUTH_SOCK" ] || [ $agent_run_state = 2 ]; then
         agent_start
+        #ssh-add
+    #elif [ "$SSH_AUTH_SOCK" ] && [ $agent_run_state = 1 ]; then
+    #    ssh-add
     fi
+
     unset env
-
-    # Fix vim-behind-ssh on windoof
-    # TODO this fixes the remote shell, but breaks the local one (Eg del prints
-    #      tilde). Grr ....
-    #if [ -n "$ConEmuBuild" ]; then TERM=dumb; export TERM; fi
-
 fi
+#
+###############################################################################
 
