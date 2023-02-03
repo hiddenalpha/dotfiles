@@ -36,6 +36,8 @@
     l9 = log --graph --decorate --date-order -n9
     la = log --graph --decorate --date-order --all
     mb = merge-base
+    #mbu = merge-base origin/develop
+    #rsmbuh = ! git reset --soft `git mbu HEAD`
     s = status
     rimraf = ! git clean -df && git reset --hard HEAD
     delmerged = !git br -d $(find .git/refs/heads -type f|cut -c17-)
