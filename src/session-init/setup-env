@@ -12,6 +12,9 @@ export TIME_STYLE=+%Y-%m-%d_%H:%M
 
 # Use ISO date format (originates from configuring thunderbird)
 export LC_TIME=en_DK.UTF-8
+# Does not work anymore. Create those keys via configEditor instead:
+# intl.date_time.pattern_override.date_short "yyyy-MM-dd"
+# intl.date_time.pattern_override.time_short "HH:mm"
 
 # Configure UI colors
 # .. for GTK-2
