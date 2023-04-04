@@ -207,6 +207,10 @@ endif
 autocmd FileType html setl sw=2 ts=2
 autocmd FileType xml  setl sw=2 ts=2
 autocmd BufNewFile,BufRead Makefile setl noexpandtab list
+autocmd FileType c setl colorcolumn=101
+autocmd FileType java setl colorcolumn=101
+autocmd FileType lua setl colorcolumn=101
+autocmd FileType js setl colorcolumn=101
 
 autocmd FileType text setl ft=awk
 autocmd BufNew,BufRead *.gnuplot setl ft=gnuplot
