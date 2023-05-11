@@ -134,6 +134,14 @@
 #-A OUTPUT -p tcp --dport 43 -j ACCEPT
 #-A INPUT  -p tcp --sport 43 -m state --state ESTABLISHED,RELATED -j ACCEPT
 
+# Git client
+#-A OUTPUT -p tcp -m state --state NEW,ESTABLISHED --dport 9418 -j ACCEPT
+#-A INPUT  -p tcp -m state --state ESTABLISHED --sport 9418 -j ACCEPT
+
+# Git server
+#-A INPUT  -p tcp -m state --state NEW,ESTABLISHED --dport 9418 -j ACCEPT
+#-A OUTPUT -p tcp -m state --state RELATED,ESTABLISHED --sport 9418 -j ACCEPT
+
 # Allow all for vbox host-only network
 #-A OUTPUT -o vboxnet0 -j ACCEPT
 #-A INPUT  -i vboxnet0 -j ACCEPT
