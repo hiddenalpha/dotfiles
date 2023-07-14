@@ -2,9 +2,6 @@
 # Put this file to: "~/.config/openbox/autostart"
 #
 
-# mouse acceleration
-#xset mouse 3/1 0
-
 #numlockx on
 
 # Screen lock daemon

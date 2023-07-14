@@ -1,0 +1,10 @@
+# Source "https://raspberrypi.stackexchange.com/a/753"
+
+#xset mouse 3/1 0  # mouse acceleration
+
+xset s off      # screensaver
+xset -dpms      # disable DPMS (Energy Star) features
+xset s noblank  # don't blank the video device
+
+exec /etc/alternatives/x-session-manager
+
