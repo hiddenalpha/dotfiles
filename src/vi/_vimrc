@@ -1,4 +1,4 @@
-" Source: https://git.hiddenalpha.ch/my-config.git/tree/src/vi/_vimrc
+" Source: https://git.hiddenalpha.ch/dotfiles.git/tree/src/vi/_vimrc
 
 if has("win32")
 
