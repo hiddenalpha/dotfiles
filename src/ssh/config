@@ -31,3 +31,7 @@ Host example.com
     RequestTTY yes
     RemoteCommand echo foo bar && exec /usr/bin/bash -i
 
+Host example.com
+    # Strongest way I found so far to force remote prompt:
+    RemoteCommand export PROMPT_COMMAND='export PS1='"'"'my-prompt\n\$ '"'"'' && exec /usr/bin/bash -li
+
