@@ -49,3 +49,12 @@
 #[core]
 #    pager = less -R -+X
 
+# How to push to multiple remotes in one go:
+#   git push all --dry-run --all
+# [remote "all"]
+# 	pushurl = user@ONE.example.com:foo/bar.git
+# 	pushurl = user@TWO.example.com:foo/bar.git
+
+# How to fetch from multiple remotes (but NOT all!) in one go:
+#   git fetch --multiple origin upstream
+
