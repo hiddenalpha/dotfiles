@@ -26,6 +26,10 @@ Host 192.168.56.*
     StrictHostKeyChecking no
     UserKnownHostsFile /dev/null
 
+# Forward X11 by default
+Host example.com
+    ForwardX11 yes
+
 # Run few setup cmds before starting a shell.
 Host example.com
     RequestTTY yes
