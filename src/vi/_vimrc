@@ -189,7 +189,7 @@ if has("win32")
 else
 
     " Insert a hash
-    inoremap <F5> <C-R>=system("head -c32 /dev/urandom\|md5sum\|awk '{printf \"%s\",$1}'")<CR>
+    inoremap <F5> <C-R>=system("head -c32 /dev/urandom\|md5sum\|head -c32'")<CR>
     "Obsolete: inoremap <F5> <C-R>=system("date\|md5sum\|awk '{printf \"%s\",$1}'")<CR>
     " insert current TS
     inoremap <S-F5> <C-R>=strftime('%Y-%m-%d_%H:%M:%S%z')<CR>
