@@ -180,16 +180,17 @@ nmap <C-s> :up<CR>
 if has("win32")
 
     " insert current TS
-    inoremap <F5> <C-R>=strftime('%Y%m%d%H%M%S')<CR>
+    "inoremap <F5> <C-R>=strftime('%Y%m%d%H%M%S')<CR>
     "inoremap <S-F5> <C-R>=strftime('%Y-%m-%d_%H:%M:%S%z')<CR><Esc>
+    inoremap <F5> <C-R>=system("dev-urandom -c 32\|base64\|tr -d \\n=+/\|head -c16")<CR>
 
     command  OsTerminal  !start cmd.exe
     command  OsFileExplorer  !start explorer.exe .
 
 else
 
-    " Insert a hash
-    inoremap <F5> <C-R>=system("head -c32 /dev/urandom\|base64\|tr -d '\n=+/'\|head -c16")<CR>
+    " Insert random
+    inoremap <F5> <C-R>=system("dev-urandom -c 32\|base64\|tr -d '\n=+/'\|head -c16")<CR>
     " insert current TS
     inoremap <S-F5> <C-R>=strftime('%Y-%m-%d_%H:%M:%S%z')<CR>
 
