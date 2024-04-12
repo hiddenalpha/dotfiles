@@ -37,10 +37,14 @@
 #-A INPUT  -p icmp --icmp-type echo-request -j ACCEPT
 #-A OUTPUT -p icmp --icmp-type echo-reply   -j ACCEPT
 
-# Traceroute client
+# Traceroute client (ToBeVerified)
+#-A OUTPUT -p icmp --icmp-type 8 -j ACCEPT
+#-A INPUT  -p icmp --icmp-type 11 -j ACCEPT
 #-A OUTPUT -p udp -m udp --match multiport --dports 33434:33523 -j ACCEPT
+#-A INPUT  -p udp -m udp --match multiport --sports 33434:33523 -j ACCEPT
 
 # Traceroute server
+#-A INPUT -p icmp --icmp-type 8 -j ACCEPT
 #-A INPUT -p udp --dport 33434:33523 -j REJECT
 
 # NTP client
