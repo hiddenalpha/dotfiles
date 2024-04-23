@@ -37,7 +37,7 @@
 #-A INPUT  -p icmp --icmp-type echo-request -j ACCEPT
 #-A OUTPUT -p icmp --icmp-type echo-reply   -j ACCEPT
 
-# Traceroute client (ToBeVerified)
+# Traceroute client
 #-A OUTPUT -p icmp --icmp-type 8 -j ACCEPT
 #-A INPUT  -p icmp --icmp-type 11 -j ACCEPT
 #-A OUTPUT -p udp -m udp --match multiport --dports 33434:33523 -j ACCEPT
@@ -145,6 +145,10 @@
 # Git server
 #-A INPUT  -p tcp -m state --state NEW,ESTABLISHED --dport 9418 -j ACCEPT
 #-A OUTPUT -p tcp -m state --state RELATED,ESTABLISHED --sport 9418 -j ACCEPT
+
+# MsTeams/MsSkype clients (in addition to TCP 80 & 443)
+#-A OUTPUT -p udp --match multiport --dports 3478:3481  -j ACCEPT
+#-A INPUT  -p udp --match multiport --sports 3478:3481  -j ACCEPT
 
 # Allow all for vbox host-only network
 #-A OUTPUT -o vboxnet0 -j ACCEPT
