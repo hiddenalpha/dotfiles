@@ -107,20 +107,16 @@
 #-A OUTPUT -p tcp -m tcp --sport 1024: --dport 1024: -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 
 # CUPS client (to connect to printers)
-#-A OUTPUT -p udp --dport 161 -j ACCEPT
-#-A INPUT -p udp --sport 161 -j ACCEPT
 #-A OUTPUT -p tcp --dport 631 -j ACCEPT
 #-A INPUT -p tcp --sport 631 -j ACCEPT
+
+# CUPS server (only required for remote access)
+#-A INPUT  -p tcp --dport 631 -j ACCEPT
+#-A OUTPUT -p tcp --sport 631 -j ACCEPT
 
 # Socket printing client
 #-A OUTPUT -p tcp -m tcp --dport 9100 -j ACCEPT
 #-A INPUT -p tcp -m state --state ESTABLISHED,RELATED --sport 9100 -j ACCEPT
-
-# CUPS server (only required for remote access)
-#-A INPUT -p udp --dport 631 -j ACCEPT
-#-A INPUT -p tcp --dport 631 -j ACCEPT
-#-A OUTPUT -p tcp --sport 631 -j ACCEPT
-#-A OUTPUT -p tcp --sport 631 -j ACCEPT
 
 # POP3 client
 #-A OUTPUT -p tcp --dport 995 -j ACCEPT
