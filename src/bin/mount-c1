@@ -1,4 +1,0 @@
-#!/bin/sh
-
-echo mount -o uid=`id -u`,gid=`id -g`,noatime,noexec /dev/sdc1 /mnt/c/
-sudo mount -o uid=`id -u`,gid=`id -g`,noatime,noexec /dev/sdc1 /mnt/c/
